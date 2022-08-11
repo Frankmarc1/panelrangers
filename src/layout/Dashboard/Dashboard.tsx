@@ -1,17 +1,14 @@
-import { ReactNode } from 'react';
-import {Navbar} from './components/Navbar';
+import { ReactNode } from "react";
+import { Navbar } from "./components/Navbar";
 
 interface props {
   children: ReactNode | ReactNode[];
 }
-
 export const Dashboard = ({ children }: props) => {
-
-  return( 
+  return (
     <div>
-      <Navbar/>
-      
-    <main className='h-screen'>{children}</main>
-  </div>
+      <Navbar />
+      <main className='h-screen'>{children}</main>
+    </div>
   );
 };
