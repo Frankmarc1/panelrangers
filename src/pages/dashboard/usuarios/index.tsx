@@ -1,9 +1,9 @@
-import { Dashboard } from "../../../layout/Dashboard/Dashboard";
-import DataTable from "../../../layout/Dashboard/components/DataTable";
+import { Dashboard } from '../../../layout/Dashboard/Dashboard';
+
 const Users = () => {
   return (
     <Dashboard>
-      <DataTable />
+      <h2>Usuarios</h2>
     </Dashboard>
   );
 };
