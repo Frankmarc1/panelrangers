@@ -14,7 +14,7 @@ import {
   startAfter,
   Unsubscribe,
 } from 'firebase/firestore';
-
+import { Spinner } from '../spinner/Spinner';
 import React, { useEffect, useState } from 'react';
 
 interface Props {
@@ -88,10 +88,11 @@ export const FirebaseDataTable = (props: Props) => {
   return (
     <div className=''>
       {loading ? (
-        <p>Cargando..</p>
+        <p ><Spinner/></p>
       ) : (
         <>
-          <table className='table w-full border text-sm mb-4'>
+        <div className={`overflow-auto`} style={{ height: '32.9rem' }}>
+          <table className={`table w-full border text-sm mb-4 `}>
             <thead className='border'>
               <tr className='border'>
                 {React.Children.toArray(
@@ -99,12 +100,13 @@ export const FirebaseDataTable = (props: Props) => {
                 )}
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {React.Children.toArray(
                 data.map((d) => <props.RowComponent values={d} />)
               )}
             </tbody>
           </table>
+          </div>
           <div className='flex justify-end items-center'>
             <div className='flex items-center mr-3'>
               <p className='mr-2'>Numero de filas</p>
