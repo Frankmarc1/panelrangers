@@ -1,6 +1,8 @@
 import { Users } from '../../types/users';
 import { FaPen, FaUserAltSlash } from 'react-icons/fa';
+
 export const RowUsers = ({ values }: { values: Users }) => {
+    
     return (
         <tr>
             <td> {values.dni} </td>
@@ -25,3 +27,5 @@ export const RowUsers = ({ values }: { values: Users }) => {
         </tr>
     );
 };
+
+
