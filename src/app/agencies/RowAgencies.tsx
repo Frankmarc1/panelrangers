@@ -1,6 +1,5 @@
 import { Agencie } from '../../types/agencies';
-import { DateTime } from 'luxon';
-import { FaPen, FaUserAltSlash } from 'react-icons/fa';
+import { DateTime} from 'luxon';
 
 export const RowAgencies= ({ values }: { values: Agencie }) => {
   return (
@@ -14,6 +13,7 @@ export const RowAgencies= ({ values }: { values: Agencie }) => {
           'dd/MM/yyyy'
         )}{' '}
       </td>
+     
     </tr>
   );
 };
