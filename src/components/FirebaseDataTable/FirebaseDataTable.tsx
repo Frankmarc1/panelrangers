@@ -95,24 +95,24 @@ export const FirebaseDataTable = (props: Props) => {
   return (
     <div className=''>
       {loading ? (
-        <p ><Spinner/></p>
+        <Spinner />
       ) : (
         <>
-        <div className={`overflow-auto`} style={{ height: '32.9rem' }}>
-          <table className={`table w-full border text-sm mb-4 `}>
-            <thead className='border'>
-              <tr className='border'>
+          <div className={`overflow-auto`} style={{ height: '32.9rem' }}>
+            <table className={`table w-full border text-sm mb-4 `}>
+              <thead className='border'>
+                <tr className='border'>
+                  {React.Children.toArray(
+                    props.headers.map((header) => <th>{header}</th>)
+                  )}
+                </tr>
+              </thead>
+              <tbody>
                 {React.Children.toArray(
-                  props.headers.map((header) => <th>{header}</th>)
+                  data.map((d) => <props.RowComponent values={d} />)
                 )}
-              </tr>
-            </thead>
-            <tbody >
-              {React.Children.toArray(
-                data.map((d) => <props.RowComponent values={d} />)
-              )}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
           </div>
           <div className='flex justify-end items-center'>
             <div className='flex items-center mr-3'>
