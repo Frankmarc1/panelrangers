@@ -1,7 +1,6 @@
 import {
   CollectionReference,
   DocumentData,
-  DocumentReference,
   endAt,
   getDocs,
   limit,
@@ -11,6 +10,7 @@ import {
   Query,
   query,
   QueryDocumentSnapshot,
+  QuerySnapshot,
   startAfter,
   Unsubscribe,
 } from 'firebase/firestore';
@@ -34,56 +34,63 @@ export const FirebaseDataTable = (props: Props) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
-  const [dir, setDir] = useState('');
+
+  let unSubscribeNextPage: Unsubscribe | null = null;
+  let unSubscribePrevPage: Unsubscribe | null = null;
+
+  const fecthData = (snap: QuerySnapshot<DocumentData>) => {
+    const data = snap.docs.map((doc) => doc.data());
+
+    setFirstDoc(snap.docs[0] || null);
+    setLastDoc(snap.docs[snap.docs.length - 1] || null);
+    setData(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
     setLoading(true);
 
-    const unSubscribe = onSnapshot(query(props.qi, limit(perPage)), (snap) => {
-      const data = snap.docs.map((doc) => doc.data());
-
-      setFirstDoc(snap.docs[0] || null);
-      setLastDoc(snap.docs[snap.docs.length - 1] || null);
-      setData(data);
-      setLoading(false);
-    });
+    const unSubscribe = onSnapshot(query(props.qi, limit(perPage)), fecthData);
 
     getDocs(props.qi).then((snap) => setTotal(snap.size));
 
     return () => {
       unSubscribe();
     };
-  }, [perPage]);
+  }, [perPage, props.qi]);
 
-  useEffect(() => {
-    let q = null;
-    let unsubscribe: Unsubscribe | null = null;
+  const nextPage = () => {
+    const q = query(
+      props.qi,
+      orderBy('id'),
+      startAfter(lastDoc),
+      limit(perPage)
+    );
 
-    setLoading(true);
-
-    if (dir === 'next') {
-      q = query(props.qi, orderBy('id'), startAfter(lastDoc), limit(perPage));
+    if (unSubscribeNextPage) {
+      unSubscribeNextPage();
     }
 
-    if (dir === 'prev') {
-      q = query(props.qi, orderBy('id'), endAt(firstDoc), limitToLast(perPage));
+    unSubscribeNextPage = onSnapshot(q, fecthData);
+    setPage((actualPage) => actualPage + 1);
+  };
+
+  const prevPage = () => {
+    const q = query(
+      props.qi,
+      orderBy('id'),
+      endAt(firstDoc),
+      limitToLast(perPage)
+    );
+
+    if (unSubscribePrevPage) {
+      unSubscribePrevPage();
     }
 
-    if (q) {
-      unsubscribe = onSnapshot(q, (snap) => {
-        const data = snap.docs.map((doc) => doc.data());
+    unSubscribePrevPage = onSnapshot(q, fecthData);
 
-        setFirstDoc(snap.docs[0] || null);
-        setLastDoc(snap.docs[snap.docs.length - 1] || null);
-        setData(data);
-        setLoading(false);
-      });
-    }
-
-    return () => {
-      unsubscribe && unsubscribe();
-    };
-  }, [dir]);
+    setPage((actualPage) => actualPage - 1);
+  };
 
   return (
     <div className=''>
@@ -131,10 +138,7 @@ export const FirebaseDataTable = (props: Props) => {
             <div className='btn-group'>
               <button
                 className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'
-                onClick={() => {
-                  setPage((actualPage) => actualPage - 1);
-                  setDir('prev');
-                }}
+                onClick={prevPage}
                 disabled={page === 1}
               >
                 «
@@ -144,10 +148,7 @@ export const FirebaseDataTable = (props: Props) => {
               </button>
               <button
                 className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'
-                onClick={() => {
-                  setPage((actualPage) => actualPage + 1);
-                  setDir('next');
-                }}
+                onClick={nextPage}
                 disabled={page === Math.ceil(total / perPage)}
               >
                 »
