@@ -1,6 +1,7 @@
 import {
   CollectionReference,
   DocumentData,
+  documentId,
   DocumentReference,
   endAt,
   getDocs,
@@ -16,6 +17,7 @@ import {
 } from 'firebase/firestore';
 import { Spinner } from '../spinner/Spinner';
 import React, { useEffect, useState } from 'react';
+import style from './styles/index.module.css';
 
 interface Props {
   qi: Query | CollectionReference;
@@ -58,7 +60,6 @@ export const FirebaseDataTable = (props: Props) => {
   useEffect(() => {
     let q = null;
     let unsubscribe: Unsubscribe | null = null;
-
     setLoading(true);
 
     if (dir === 'next') {
@@ -88,74 +89,75 @@ export const FirebaseDataTable = (props: Props) => {
   return (
     <div className=''>
       {loading ? (
-        <p ><Spinner/></p>
+        <p ><Spinner /></p>
       ) : (
         <>
-        <div className={`overflow-auto`} style={{ height: '32.9rem' }}>
-          <table className={`table w-full border text-sm mb-4 `}>
-            <thead className='border'>
-              <tr className='border'>
+          <div className={`overflow-x-auto w-[99.8%] h-full absolute ${style.scroll}`} >
+            <table className={`table w-full border text-sm mb-4 `}>
+              <thead className='border'>
+                <tr className='border'>
+                  {React.Children.toArray(
+                    props.headers.map((header) => <th>{header}</th>)
+                  )}
+                </tr>
+              </thead>
+              <tbody >
                 {React.Children.toArray(
-                  props.headers.map((header) => <th>{header}</th>)
+                  data.map((d) => <props.RowComponent values={d} />)
                 )}
-              </tr>
-            </thead>
-            <tbody >
-              {React.Children.toArray(
-                data.map((d) => <props.RowComponent values={d} />)
-              )}
-            </tbody>
-          </table>
-          </div>
-          <div className='flex justify-end items-center'>
-            <div className='flex items-center mr-3'>
-              <p className='mr-2'>Numero de filas</p>
-              <select
-                className='select select-sm'
-                onChange={(e) => setPerPage(parseInt(e.target.value))}
-                defaultValue={perPage}
-              >
-                <option value='10'> 10 </option>
-                <option value='15'> 15 </option>
-                <option value='20'> 20 </option>
-                <option value='40'> 40 </option>
-              </select>
-            </div>
+              </tbody>
+            </table>
+            <div className='flex justify-end items-center'>
+              <div className='flex items-center mr-3'>
+                <p className='mr-2'>Numero de filas</p>
+                <select
+                  className='select select-sm'
+                  onChange={(e) => setPerPage(parseInt(e.target.value))}
+                  defaultValue={perPage}
+                >
+                  <option value='10'> 10 </option>
+                  <option value='15'> 15 </option>
+                  <option value='20'> 20 </option>
+                  <option value='40'> 40 </option>
+                </select>
+              </div>
 
-            <p className='mr-3'>
-              <span className='mr-2'>{page * perPage - (perPage - 1)}</span>
-              <span className='mr-2'>-</span>
-              <span className='mr-2'>{page * perPage}</span>
-              <span className='mr-2'>de </span>
-              <span>{Math.ceil(total / perPage)} </span>
-            </p>
+              <p className='mr-3'>
+                <span className='mr-2'>{page * perPage - (perPage - 1)}</span>
+                <span className='mr-2'>-</span>
+                <span className='mr-2'>{page * perPage}</span>
+                <span className='mr-2'>de </span>
+                <span>{Math.ceil(total / perPage)} </span>
+              </p>
 
-            <div className='btn-group'>
-              <button
-                className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'
-                onClick={() => {
-                  setPage((actualPage) => actualPage - 1);
-                  setDir('prev');
-                }}
-                disabled={page === 1}
-              >
-                «
-              </button>
-              <button className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'>
-                {page}
-              </button>
-              <button
-                className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'
-                onClick={() => {
-                  setPage((actualPage) => actualPage + 1);
-                  setDir('next');
-                }}
-                disabled={page === Math.ceil(total / perPage)}
-              >
-                »
-              </button>
+              <div className='btn-group'>
+                <button
+                  className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'
+                  onClick={() => {
+                    setPage((actualPage) => actualPage - 1);
+                    setDir('prev');
+                  }}
+                  disabled={page === 1}
+                >
+                  «
+                </button>
+                <button className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'>
+                  {page}
+                </button>
+                <button
+                  className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'
+                  onClick={() => {
+                    setPage((actualPage) => actualPage + 1);
+                    setDir('next');
+                  }}
+                  disabled={page === Math.ceil(total / perPage)}
+                >
+                  »
+                </button>
+              </div>
             </div>
           </div>
+
         </>
       )}
     </div>

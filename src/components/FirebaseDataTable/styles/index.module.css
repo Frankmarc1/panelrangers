@@ -17,3 +17,15 @@
       transform: rotate(360deg);
     }
   }
+
+  /*Diseaing ScrollBar*/
+  .scroll::-webkit-scrollbar{
+    width: 7px;
+  }
+  .scroll::-webkit-scrollbar-thumb{
+    background-color: #94a3b8;
+    border-top-right-radius: 10rem;
+    border-top-left-radius: 10rem;
+    border-bottom-right-radius: 10rem;
+    border-bottom-left-radius: 10rem;
+  }
