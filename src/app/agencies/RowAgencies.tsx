@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import { Agencie } from '../../types/agencies';
-import { DateTime} from 'luxon';
-=======
+
 import { Agency } from '../../types/agency';
->>>>>>> f62465ca46ad6ee02830d35c3fcecbeb795dc580
 
 import { DateTime } from 'luxon';
 
