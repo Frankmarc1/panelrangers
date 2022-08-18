@@ -1,31 +1,39 @@
-import { Users } from '../../types/users';
+import { User } from '../../types/user';
 import { FaPen, FaUserAltSlash } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { getDoc } from 'firebase/firestore';
+import { Rol } from '../../types/rol';
 
-export const RowUsers = ({ values }: { values: Users }) => {
-    
-    return (
-        <tr>
-            <td> {values.dni} </td>
-            <td>
-                {values.username}
-            </td>
-            <td>
-                {
+export const RowUsers = ({ values }: { values: User }) => {
+  const [nameRol, setNameRol] = useState('');
+  const [loading, setLoading] = useState(true);
 
-                }
-            </td>
+  useEffect(() => {
+    getDoc(values.reference_rol)
+      .then((snap) => {
+        const { name } = snap.data() as Rol;
+        setNameRol(name);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
-            <td className=''>
-                <button className='btn btn-success btn-sm mr-3'>
-                    <FaPen />
-                </button>
+  return (
+    <tr>
+      <td> {values.dni} </td>
+      <td>{values.username}</td>
+      <td>{!loading && nameRol}</td>
 
-                <button className='btn btn-error btn-sm'>
-                    <FaUserAltSlash />
-                </button>
-            </td>
-        </tr>
-    );
+      <td className=''>
+        <button className='btn btn-success btn-sm mr-3'>
+          <FaPen />
+        </button>
+
+        <button className='btn btn-error btn-sm'>
+          <FaUserAltSlash />
+        </button>
+      </td>
+    </tr>
+  );
 };
-
-
