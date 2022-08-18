@@ -9,6 +9,7 @@ console.log(colRef)
 const Userss = () => {
   return (
     <Dashboard>
+      <div className='h-[35.2rem] relative'>
       <FirebaseDataTable
         headers={[
           'D.N.I',
@@ -21,7 +22,7 @@ const Userss = () => {
         qi={colRef}
 
       />
-
+    </div>
     </Dashboard>
 
   );

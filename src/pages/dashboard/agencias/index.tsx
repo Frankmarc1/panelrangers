@@ -9,6 +9,7 @@ const colRef = collection(db_client, 'empresas_agencia');
 const Agencies = () => {
   return (
     <Dashboard>
+      <div className='h-[35.2rem] relative'>
       <FirebaseDataTable
         headers={[
           'NOMBRE',
@@ -21,6 +22,7 @@ const Agencies = () => {
         RowComponent={RowAgencies}
         qi={colRef}
       />
+      </div>
     </Dashboard>
   );
 };

@@ -5,5 +5,4 @@ export interface Agencie {
     direccion: string;
     estado: boolean;
     fecha_registro: Timestamp;
-   
 }
