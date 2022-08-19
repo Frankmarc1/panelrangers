@@ -1,19 +1,14 @@
 import Link from 'next/link';
 import { FaBars, FaList } from 'react-icons/fa';
-import { useMediaQuery } from 'react-responsive';
 
 import { useRouteMatch } from '../../../hooks/useRouteMatch';
-import { Sidebar } from './Sidebar';
-import { useFavicon } from '../../../hooks/useFavicon';
 
 export const Navbar = () => {
   const searchPath = useRouteMatch();
-  const isMovil = useMediaQuery({ maxWidth: '596px' });
-  const icon = useFavicon();
 
   return (
     <nav className='navbar bg-base-100 w-full'>
-      <div className='navbar-start pl-[1rem]'>
+      <div className='navbar-start'>
         <div className='dropdown'>
           <label tabIndex={0} className=' btn btn-ghost btn-circle'>
             <FaBars />
@@ -23,16 +18,6 @@ export const Navbar = () => {
             className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
           >
             <li>
-              <Link href='/dashboard/estadisticas'>
-                <a
-                  className={
-                    searchPath('estadisticas') ? 'text-blue-500 font-bold' : ''
-                  }
-                >
-                  {' '}
-                  Estadisticas{' '}
-                </a>
-              </Link>
               <Link href={'/dashboard/usuarios'}>
                 <a
                   className={
@@ -79,28 +64,11 @@ export const Navbar = () => {
         </Link>
       </div>
 
-      <div className='navbar-end pr-[1rem]'>
-        {!isMovil ? (
-          <ul className='flex w-2/6 justify-end'>
-            <Sidebar />
-          </ul>
-        ) : (
-          <div className='dropdown dropdown-end'>
-            <label tabIndex={0} className='btn btn-ghost btn-circle'>
-              <FaList />
-            </label>
-            <ul
-              tabIndex={0}
-              className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
-            >
-              <Sidebar />
-            </ul>
-          </div>
-        )}
+      <div className='navbar-end'>
         <div className='dropdown dropdown-end'>
           <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
             <div className='w-10 rounded-full'>
-              <img src={icon} />
+              <img src='/Usuario.png' />
             </div>
           </label>
           <ul
