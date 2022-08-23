@@ -87,11 +87,11 @@ export const FirebaseDataTable = (props: Props) => {
   }, [dir]);
 
   return (
-    <div className='w-full h-full'>
+    <div className={`w-full overflow-auto h-[34.8rem] ${style.scroll}`}>
       {loading ? (
         <Spinner />
       ) : (
-        <div className='overflow-auto'>
+        <div className=''>
           <table className='table w-full table-compact mb-4'>
             <thead>
               <tr>

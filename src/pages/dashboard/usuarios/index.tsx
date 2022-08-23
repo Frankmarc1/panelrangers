@@ -9,17 +9,17 @@ const colRef = collection(db_client, 'rangers_masters');
 const Userss = () => {
   return (
     <Dashboard>
-      <div className='w-full'>
+      <div className='overflow-hidden'>
         <button className='btn btn-success gap-2 btn-sm mb-2'>
           <FaPlus />
           Crear usuario
         </button>
-      </div>
       <FirebaseDataTable
         headers={['D.N.I', 'NOMBRE Y APELLIDOS', 'ROL', 'ACCIONES']}
         RowComponent={RowUsers}
         qi={colRef}
       />
+      </div>
     </Dashboard>
   );
 };
