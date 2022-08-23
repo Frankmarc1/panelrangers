@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { Navbar } from './components/Navbar';
 
 interface props {
@@ -6,9 +7,17 @@ interface props {
 }
 export const Dashboard = ({ children }: props) => {
   return (
-    <div className='w-screen h-screen'>
-      <Navbar />
-      <main className='p-3'>{children}</main>
-    </div>
+    <>
+      <Toaster
+        position='top-center'
+        gutter={8}
+        reverseOrder={false}
+        toastOptions={{ duration: 5000 }}
+      />
+      <div className='w-screen h-screen'>
+        <Navbar />
+        <main className='p-3 w-full'>{children}</main>
+      </div>
+    </>
   );
 };

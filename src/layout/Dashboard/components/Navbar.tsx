@@ -31,6 +31,19 @@ export const Navbar = () => {
             </li>
 
             <li>
+              <Link href='/dashboard/subs'>
+                <a
+                  className={
+                    searchPath('subs') ? 'text-blue-500 font-bold' : ''
+                  }
+                >
+                  {' '}
+                  Subscriciones{' '}
+                </a>
+              </Link>
+            </li>
+
+            <li>
               <Link href='/dashboard/motorizados'>
                 <a
                   className={

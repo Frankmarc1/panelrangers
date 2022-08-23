@@ -27,6 +27,7 @@ export interface Motorized {
     subadmin: string;
   };
   fcm: string;
+  id: string;
   historial_puntos: Points[];
   medallas: Medal[];
   movilidad: {
