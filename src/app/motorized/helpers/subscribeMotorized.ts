@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -35,4 +36,6 @@ export const subscribeMotorized = async (id: string) => {
   await setDoc(docMotorized, {
     ...snapSubs.data(),
   });
+
+	await deleteDoc(docSubs)
 };
