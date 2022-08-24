@@ -55,7 +55,7 @@ export const FirebaseDataTable = (props: Props) => {
     return () => {
       unSubscribe();
     };
-  }, [perPage]);
+  }, [props.qi, perPage]);
 
   useEffect(() => {
     let q = null;
@@ -87,25 +87,27 @@ export const FirebaseDataTable = (props: Props) => {
   }, [dir]);
 
   return (
-    <div className={`w-full overflow-auto h-[34.8rem] ${style.scroll}`}>
+    <div>
       {loading ? (
         <Spinner />
       ) : (
-        <div className=''>
-          <table className='table w-full table-compact mb-4'>
-            <thead>
-              <tr>
+        <>
+          <div className={`w-full overflow-auto h-auto ${style.scroll} mb-4`}>
+            <table className='table w-full h-full table-compact'>
+              <thead>
+                <tr>
+                  {React.Children.toArray(
+                    props.headers.map((header) => <th>{header}</th>)
+                  )}
+                </tr>
+              </thead>
+              <tbody>
                 {React.Children.toArray(
-                  props.headers.map((header) => <th>{header}</th>)
+                  data.map((d) => <props.RowComponent values={d} />)
                 )}
-              </tr>
-            </thead>
-            <tbody>
-              {React.Children.toArray(
-                data.map((d) => <props.RowComponent values={d} />)
-              )}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
 
           <div className='flex justify-end items-center px-3'>
             <div className='flex items-center mr-3'>
@@ -156,7 +158,7 @@ export const FirebaseDataTable = (props: Props) => {
               </button>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
