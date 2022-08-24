@@ -1,4 +1,5 @@
 import { collection } from 'firebase/firestore';
+import Head from 'next/head';
 import { RowSubs } from '../../../app/motorized/RowSubs';
 import { FirebaseDataTable } from '../../../components/FirebaseDataTable/FirebaseDataTable';
 import { db_client } from '../../../firebase/client';
@@ -9,6 +10,9 @@ const colRef = collection(db_client, 'suscripciones');
 const Subs = () => {
   return (
     <Dashboard>
+      <Head>
+        <title>Subscripciones</title>
+      </Head>
       <FirebaseDataTable
         qi={colRef}
         headers={[

@@ -4,23 +4,27 @@ import { RowUsers } from '../../../app/users/RowUsers';
 import { FirebaseDataTable } from '../../../components/FirebaseDataTable/FirebaseDataTable';
 import { db_client } from '../../../firebase/client';
 import { FaPlus } from 'react-icons/fa';
+import Head from 'next/head';
 const colRef = collection(db_client, 'rangers_masters');
 
-const Userss = () => {
+const Users = () => {
   return (
     <Dashboard>
-      <div className='overflow-hidden'>
+      <Head>
+        <title>Usuarios</title>
+      </Head>
+      <div>
         <button className='btn btn-success gap-2 btn-sm mb-2'>
           <FaPlus />
           Crear usuario
         </button>
-      <FirebaseDataTable
-        headers={['D.N.I', 'NOMBRE Y APELLIDOS', 'ROL', 'ACCIONES']}
-        RowComponent={RowUsers}
-        qi={colRef}
-      />
+        <FirebaseDataTable
+          headers={['D.N.I', 'NOMBRE Y APELLIDOS', 'ROL', 'ACCIONES']}
+          RowComponent={RowUsers}
+          qi={colRef}
+        />
       </div>
     </Dashboard>
   );
 };
-export default Userss;
+export default Users;
