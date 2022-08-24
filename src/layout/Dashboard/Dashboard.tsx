@@ -14,7 +14,7 @@ export const Dashboard = ({ children }: props) => {
         reverseOrder={false}
         toastOptions={{ duration: 5000 }}
       />
-      <div className='h-screen overflow-hidden'>
+      <div className='h-screen'>
         <Navbar />
         <main className='p-3 w-full'>{children}</main>
       </div>

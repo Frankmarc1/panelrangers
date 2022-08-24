@@ -1,6 +1,7 @@
 import { Motorized } from '../../types/motorized';
 import { DateTime } from 'luxon';
 import { FaPen, FaUserAltSlash } from 'react-icons/fa';
+import Link from 'next/link';
 
 export const RowMotorized = ({ values }: { values: Motorized }) => {
   return (
@@ -18,9 +19,11 @@ export const RowMotorized = ({ values }: { values: Motorized }) => {
         )}{' '}
       </td>
       <td className=''>
-        <button className='btn btn-success btn-sm mr-3'>
+        <Link href={`motorizados/${values.id}/editar`}>
+        <button className='btn btn-success btn-sm mr-3' >
           <FaPen />
         </button>
+        </Link>
 
         <button className='btn btn-error btn-sm'>
           <FaUserAltSlash />

@@ -9,7 +9,7 @@ const colRef = collection(db_client, 'users_motorizados');
 const Motorized = () => {
   return (
     <Dashboard>
-      <div className={`h-[35.2rem] relative`}>
+      <div>
         <FirebaseDataTable
           headers={[
             'D.N.I',
