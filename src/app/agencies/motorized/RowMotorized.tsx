@@ -8,6 +8,7 @@ import {
 } from 'firebase/firestore';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
+import { FaClipboard } from 'react-icons/fa';
 import { db_client } from '../../../firebase/client';
 import { Motorized } from '../../../types/motorized';
 import { Report } from '../../../types/report';
@@ -35,16 +36,20 @@ export const RowMotorized = ({ values }: { values: Motorized }) => {
         const lastReport = snap.docs[0].data() as Report;
 
         setLastReportDate(
-          DateTime.fromSeconds(lastReport.fecha_registro.seconds).toFormat(
-            'HH:mm / dd-MM-yy'
-          )
+          `
+					 El ${DateTime.fromSeconds(lastReport.fecha_registro.seconds).toFormat(
+             'dd-MM-yy'
+           )}  a las ${DateTime.fromSeconds(
+            lastReport.fecha_registro.seconds
+          ).toFormat('HH:mm')}
+					`
         );
       }
       setLoading1(false);
     });
 
     getDocs(queryIsDebtor).then((snap) => {
-      setIsDebtor(snap.empty);
+      setIsDebtor(!snap.empty);
       setLoading2(false);
     });
   }, []);
@@ -67,11 +72,20 @@ export const RowMotorized = ({ values }: { values: Motorized }) => {
       <td>
         {loading2 ? (
           <button className='btn btn-ghost btn-sm loading'></button>
-        ) : isDebtor ? (
-          'Deuda'
         ) : (
-          'No debe'
+          <div
+            className={`badge badge-md ${
+              isDebtor ? 'badge-error' : 'badge-success'
+            }`}
+          >
+            {isDebtor ? 'Deuda' : 'Activo'}
+          </div>
         )}
+      </td>
+      <td>
+        <button className='btn btn-primary btn-sm'>
+          <FaClipboard />
+        </button>
       </td>
     </tr>
   );
