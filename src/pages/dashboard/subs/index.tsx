@@ -1,11 +1,9 @@
-import { collection } from 'firebase/firestore';
+import { collection, orderBy, query } from 'firebase/firestore';
 import Head from 'next/head';
 import { RowSubs } from '../../../app/motorized/RowSubs';
 import { FirebaseDataTable } from '../../../components/FirebaseDataTable/FirebaseDataTable';
 import { db_client } from '../../../firebase/client';
 import { Dashboard } from '../../../layout/Dashboard/Dashboard';
-
-const colRef = collection(db_client, 'suscripciones');
 
 const Subs = () => {
   return (
@@ -14,7 +12,7 @@ const Subs = () => {
         <title>Subscripciones</title>
       </Head>
       <FirebaseDataTable
-        qi={colRef}
+        qi={query(collection(db_client, 'suscripciones'), orderBy('id'))}
         headers={[
           'D.N.I',
           'TELEFONO',
