@@ -1,10 +1,9 @@
-import { collection } from 'firebase/firestore';
+import { collection, orderBy, query } from 'firebase/firestore';
+
 import { RowMotorized } from '../../../app/motorized/RowMotorized';
 import { FirebaseDataTable } from '../../../components/FirebaseDataTable/FirebaseDataTable';
 import { db_client } from '../../../firebase/client';
 import { Dashboard } from '../../../layout/Dashboard/Dashboard';
-
-const colRef = collection(db_client, 'users_motorizados');
 
 const Motorized = () => {
   return (
@@ -20,7 +19,7 @@ const Motorized = () => {
             'ACCIONES',
           ]}
           RowComponent={RowMotorized}
-          qi={colRef}
+          qi={query(collection(db_client, 'users_motorizados'), orderBy('id'))}
         />
       </div>
     </Dashboard>
