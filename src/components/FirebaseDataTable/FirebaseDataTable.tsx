@@ -1,9 +1,7 @@
 import {
   CollectionReference,
   DocumentData,
-  documentId,
-  DocumentReference,
-  endAt,
+  endBefore,
   getDocs,
   limit,
   limitToLast,
@@ -12,11 +10,14 @@ import {
   Query,
   query,
   QueryDocumentSnapshot,
+  QuerySnapshot,
   startAfter,
   Unsubscribe,
 } from 'firebase/firestore';
-import { Spinner } from '../spinner/Spinner';
 import React, { useEffect, useState } from 'react';
+
+import { Spinner } from '../spinner/Spinner';
+
 import style from './styles/index.module.css';
 
 interface Props {
@@ -36,19 +37,21 @@ export const FirebaseDataTable = (props: Props) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
-  const [dir, setDir] = useState('');
+  let unSubscribeNextPage: Unsubscribe | null = null;
+  let unSubscribePrevPage: Unsubscribe | null = null;
+
+  const fecthData = (snap: QuerySnapshot<DocumentData>) => {
+    const data = snap.docs.map((doc) => doc.data());
+
+    setFirstDoc(snap.docs[0] || null);
+    setLastDoc(snap.docs[snap.docs.length - 1] || null);
+    setData(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
     setLoading(true);
-
-    const unSubscribe = onSnapshot(query(props.qi, limit(perPage)), (snap) => {
-      const data = snap.docs.map((doc) => doc.data());
-
-      setFirstDoc(snap.docs[0] || null);
-      setLastDoc(snap.docs[snap.docs.length - 1] || null);
-      setData(data);
-      setLoading(false);
-    });
+    const unSubscribe = onSnapshot(query(props.qi, limit(perPage)), fecthData);
 
     getDocs(props.qi).then((snap) => setTotal(snap.size));
 
@@ -57,34 +60,31 @@ export const FirebaseDataTable = (props: Props) => {
     };
   }, [props.qi, perPage]);
 
-  useEffect(() => {
-    let q = null;
-    let unsubscribe: Unsubscribe | null = null;
+  const nextPage = () => {
+    if (unSubscribeNextPage) {
+      unSubscribeNextPage();
+    }
     setLoading(true);
 
-    if (dir === 'next') {
-      q = query(props.qi, orderBy('id'), startAfter(lastDoc), limit(perPage));
+    unSubscribeNextPage = onSnapshot(
+      query(props.qi, startAfter(lastDoc), limit(perPage)),
+      fecthData
+    );
+    setPage((actualPage) => actualPage + 1);
+  };
+
+  const prevPage = () => {
+    if (unSubscribePrevPage) {
+      unSubscribePrevPage();
     }
+    setLoading(true);
 
-    if (dir === 'prev') {
-      q = query(props.qi, orderBy('id'), endAt(firstDoc), limitToLast(perPage));
-    }
-
-    if (q) {
-      unsubscribe = onSnapshot(q, (snap) => {
-        const data = snap.docs.map((doc) => doc.data());
-
-        setFirstDoc(snap.docs[0] || null);
-        setLastDoc(snap.docs[snap.docs.length - 1] || null);
-        setData(data);
-        setLoading(false);
-      });
-    }
-
-    return () => {
-      unsubscribe && unsubscribe();
-    };
-  }, [dir]);
+    unSubscribePrevPage = onSnapshot(
+      query(props.qi, endBefore(firstDoc), limitToLast(perPage)),
+      fecthData
+    );
+    setPage((actualPage) => actualPage - 1);
+  };
 
   return (
     <div>
@@ -135,10 +135,7 @@ export const FirebaseDataTable = (props: Props) => {
             <div className='btn-group'>
               <button
                 className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'
-                onClick={() => {
-                  setPage((actualPage) => actualPage - 1);
-                  setDir('prev');
-                }}
+                onClick={prevPage}
                 disabled={page === 1}
               >
                 «
@@ -148,10 +145,7 @@ export const FirebaseDataTable = (props: Props) => {
               </button>
               <button
                 className='btn btn-sm bg-white border-blue-200 text-slate-900 font-bold hover:bg-blue-500 hover:border-white'
-                onClick={() => {
-                  setPage((actualPage) => actualPage + 1);
-                  setDir('next');
-                }}
+                onClick={nextPage}
                 disabled={page === Math.ceil(total / perPage)}
               >
                 »
