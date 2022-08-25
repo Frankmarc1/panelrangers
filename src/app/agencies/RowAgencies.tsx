@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import { FaMotorcycle } from 'react-icons/fa';
-
+import { ImOffice } from "react-icons/im";
 import { Agency } from '../../types/agency';
 
 export const RowAgencies = ({ values }: { values: Agency }) => {
@@ -23,6 +23,13 @@ export const RowAgencies = ({ values }: { values: Agency }) => {
             <FaMotorcycle />
           </a>
         </Link>
+      </td>
+      <td>
+        <Link href={`/dashboard/agencias/${values.id}/agentes`}>
+          <a className='btn bg-sky-500 border-sky-500 btn-sm text-lg ml-[-2rem]'>
+            <ImOffice/>
+          </a>
+        </Link> 
       </td>
     </tr>
   );
