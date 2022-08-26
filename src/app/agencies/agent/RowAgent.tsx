@@ -1,13 +1,15 @@
-import { DateTime } from 'luxon';
 import { Agent } from '../../../types/agent';
+
 export const RowAgent = ({ values }: { values: Agent }) => {
-    console.log(values);
   return (
     <tr>
+      <td>
+        <img src={values.logo} alt='' width={64} height={64} />
+      </td>
       <td>{values.nombre} </td>
       <td>{values.direccion} </td>
-   
-      <td>Acc</td>
+      <td>{values.estado ? 'Activo' : 'Eliminado'}</td>
+      <td></td>
     </tr>
   );
 };
