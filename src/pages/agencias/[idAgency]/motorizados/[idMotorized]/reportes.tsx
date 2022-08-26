@@ -12,14 +12,14 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { RowReports } from '../../../../../../app/agencies/motorized/RowReports';
-import { FirebaseDataTable } from '../../../../../../components/FirebaseDataTable/FirebaseDataTable';
-import { db_client } from '../../../../../../firebase/client';
-import { Dashboard } from '../../../../../../layout/Dashboard/Dashboard';
-import { Motorized } from '../../../../../../types/motorized';
-import { Params } from '../../../../../../types/params';
-import { Report } from '../../../../../../types/report';
-import { currencyFormat } from '../../../../../../utils/strFormat';
+import { RowReports } from '../../../../../app/agencies/motorized/RowReports';
+import { FirebaseDataTable } from '../../../../../components/FirebaseDataTable/FirebaseDataTable';
+import { db_client } from '../../../../../firebase/client';
+import { Dashboard } from '../../../../../layout/Dashboard/Dashboard';
+import { Motorized } from '../../../../../types/motorized';
+import { Params } from '../../../../../types/params';
+import { Report } from '../../../../../types/report';
+import { currencyFormat } from '../../../../../utils/strFormat';
 
 interface Props {
   nameOfMotorized: string;

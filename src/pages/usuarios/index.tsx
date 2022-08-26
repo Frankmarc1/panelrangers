@@ -1,8 +1,8 @@
-import { Dashboard } from '../../../layout/Dashboard/Dashboard';
+import { Dashboard } from '../../layout/Dashboard/Dashboard';
 import { collection } from 'firebase/firestore';
-import { RowUsers } from '../../../app/users/RowUsers';
-import { FirebaseDataTable } from '../../../components/FirebaseDataTable/FirebaseDataTable';
-import { db_client } from '../../../firebase/client';
+import { RowUsers } from '../../app/users/RowUsers';
+import { FirebaseDataTable } from '../../components/FirebaseDataTable/FirebaseDataTable';
+import { db_client } from '../../firebase/client';
 import { FaPlus } from 'react-icons/fa';
 import Head from 'next/head';
 const colRef = collection(db_client, 'rangers_masters');

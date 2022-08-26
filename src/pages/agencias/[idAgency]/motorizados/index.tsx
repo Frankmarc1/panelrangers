@@ -1,9 +1,9 @@
 import { collection, doc, orderBy, query, where } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import { RowMotorized } from '../../../../../app/agencies/motorized/RowMotorized';
-import { FirebaseDataTable } from '../../../../../components/FirebaseDataTable/FirebaseDataTable';
-import { db_client } from '../../../../../firebase/client';
-import { Dashboard } from '../../../../../layout/Dashboard/Dashboard';
+import { RowMotorized } from '../../../../app/agencies/motorized/RowMotorized';
+import { FirebaseDataTable } from '../../../../components/FirebaseDataTable/FirebaseDataTable';
+import { db_client } from '../../../../firebase/client';
+import { Dashboard } from '../../../../layout/Dashboard/Dashboard';
 
 const Index = () => {
   const router = useRouter();

@@ -1,9 +1,9 @@
 import { collection, orderBy, query } from 'firebase/firestore';
 import Head from 'next/head';
-import { RowSubs } from '../../../app/motorized/RowSubs';
-import { FirebaseDataTable } from '../../../components/FirebaseDataTable/FirebaseDataTable';
-import { db_client } from '../../../firebase/client';
-import { Dashboard } from '../../../layout/Dashboard/Dashboard';
+import { RowSubs } from '../../app/motorized/RowSubs';
+import { FirebaseDataTable } from '../../components/FirebaseDataTable/FirebaseDataTable';
+import { db_client } from '../../firebase/client';
+import { Dashboard } from '../../layout/Dashboard/Dashboard';
 
 const Subs = () => {
   return (
