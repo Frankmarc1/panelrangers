@@ -13,6 +13,8 @@ export interface Hours {
   hora_fin: string;
   hora_inicio: string;
   horas: number;
+  id: number;
+  tipo: 'Comisión' | 'Part time';
 }
 
 export interface Report {
@@ -28,10 +30,10 @@ export interface Report {
   nombreReporte: string;
   observacion: string;
   pago: number;
-  pagos: Pay[];
+  pagos?: Pay[];
   porcentaje: number;
-  ref_mes: DocumentReference;
+  ref_mes?: DocumentReference;
   reference_master: DocumentReference;
-  registro_horas: Hours[];
+  registro_horas?: Hours[];
   totalReporte: number;
 }
