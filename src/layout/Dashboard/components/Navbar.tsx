@@ -18,7 +18,7 @@ export const Navbar = () => {
             className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
           >
             <li>
-              <Link href={'/dashboard/usuarios'}>
+              <Link href={'/usuarios'}>
                 <a
                   className={
                     searchPath('usuarios') ? 'text-blue-500 font-bold' : ''
@@ -31,7 +31,7 @@ export const Navbar = () => {
             </li>
 
             <li>
-              <Link href='/dashboard/subs'>
+              <Link href='/subs'>
                 <a
                   className={
                     searchPath('subs') ? 'text-blue-500 font-bold' : ''
@@ -44,7 +44,7 @@ export const Navbar = () => {
             </li>
 
             <li>
-              <Link href='/dashboard/motorizados'>
+              <Link href='/motorizados'>
                 <a
                   className={
                     searchPath('motorizados') ? 'text-blue-500 font-bold' : ''
@@ -57,7 +57,7 @@ export const Navbar = () => {
             </li>
 
             <li>
-              <Link href='/dashboard/agencias'>
+              <Link href='/agencias'>
                 <a
                   className={
                     searchPath('agencias') ? 'text-blue-500 font-bold' : ''
