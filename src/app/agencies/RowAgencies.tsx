@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import Link from 'next/link';
-import { FaMotorcycle } from 'react-icons/fa';
-import { ImOffice } from "react-icons/im";
+import { FaBuilding, FaMotorcycle } from 'react-icons/fa';
+
 import { Agency } from '../../types/agency';
 
 export const RowAgencies = ({ values }: { values: Agency }) => {
@@ -17,19 +17,17 @@ export const RowAgencies = ({ values }: { values: Agency }) => {
           'dd/MM/yyyy'
         )}{' '}
       </td>
-      <td>
-        <Link href={`/dashboard/agencias/${values.id}/motorizados`}>
-          <a className='btn btn-primary btn-sm text-lg'>
+      <td className='flex'>
+        <Link href={`/agencias/${values.id}/motorizados`}>
+          <a className='btn btn-primary btn-sm mr-2'>
             <FaMotorcycle />
           </a>
         </Link>
-      </td>
-      <td>
-        <Link href={`/dashboard/agencias/${values.id}/agentes`}>
-          <a className='btn bg-sky-500 border-sky-500 btn-sm text-lg ml-[-2rem]'>
-            <ImOffice/>
+        <Link href={`/agencias/${values.id}/agentes`}>
+          <a className='btn btn-secondary btn-sm '>
+            <FaBuilding />
           </a>
-        </Link> 
+        </Link>
       </td>
     </tr>
   );
