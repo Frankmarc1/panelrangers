@@ -7,6 +7,8 @@ import {
   where,
 } from 'firebase/firestore';
 import { DateTime } from 'luxon';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { FaClipboard } from 'react-icons/fa';
 import { db_client } from '../../../firebase/client';
@@ -18,6 +20,8 @@ export const RowMotorized = ({ values }: { values: Motorized }) => {
   const [isDebtor, setIsDebtor] = useState(true);
   const [loading1, setLoading1] = useState(true);
   const [loading2, setLoading2] = useState(true);
+  const router = useRouter();
+  const { idAgency } = router.query;
 
   useEffect(() => {
     const colRef = collection(
@@ -83,9 +87,13 @@ export const RowMotorized = ({ values }: { values: Motorized }) => {
         )}
       </td>
       <td>
-        <button className='btn btn-primary btn-sm'>
-          <FaClipboard />
-        </button>
+        <Link
+          href={`/dashboard/agencias/${idAgency}/motorizados/${values.id}/reportes`}
+        >
+          <a className='btn btn-primary btn-sm'>
+            <FaClipboard />
+          </a>
+        </Link>
       </td>
     </tr>
   );
