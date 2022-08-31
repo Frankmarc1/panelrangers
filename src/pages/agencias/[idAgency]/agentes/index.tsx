@@ -1,5 +1,7 @@
 import { collection, doc, orderBy, query, where } from 'firebase/firestore';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { IoIosAddCircle } from "react-icons/io";
 
 import { RowAgent } from '../../../../app/agencies/agent/RowAgent';
 import { FirebaseDataTable } from '../../../../components/FirebaseDataTable/FirebaseDataTable';
@@ -12,22 +14,35 @@ const Agents = () => {
 
   return (
     <Dashboard>
-      <FirebaseDataTable
-        RowComponent={RowAgent}
-        headers={['Logo', 'Nombre', 'Dirreción', 'Estado', 'Acciones']}
-        qi={query(
-          collection(
-            db_client,
-            `empresas_agencia/${idAgency}/agencia_empresas`
-          ),
-          where(
-            'reference_agencia',
-            '==',
-            doc(db_client, `empresas_agencia/${idAgency}`)
-          ),
-          orderBy('nombre', 'asc')
-        )}
-      />
+      <div className='card bg-white border'>
+        <div className='card-header  mx-[1rem] py-2'>
+          <div className='flex justify-between'>
+            <h3 className='card-title'>Lista de Agentes</h3>
+            <Link href={`/agencias/${idAgency}/agentes/add`}>
+              <button type="button" className="btn btn-primary btn-sm"><span className='text-xl mr-2'><IoIosAddCircle /></span>Agregar Empresa</button>
+
+            </Link>
+          </div>
+        </div>
+        <div className='mx-[1rem]'>
+          <FirebaseDataTable
+            RowComponent={RowAgent}
+            headers={['Logo', 'Nombre', 'Dirreción', 'Estado', 'Acciones']}
+            qi={query(
+              collection(
+                db_client,
+                `empresas_agencia/${idAgency}/agencia_empresas`
+              ),
+              where(
+                'reference_agencia',
+                '==',
+                doc(db_client, `empresas_agencia/${idAgency}`)
+              ),
+              orderBy('nombre', 'asc')
+            )}
+          />
+        </div>
+      </div>
     </Dashboard>
   );
 };
