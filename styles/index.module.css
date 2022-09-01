@@ -1,0 +1,43 @@
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: #09f;
+
+  animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*Diseaing ScrollBar*/
+.scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(56, 75, 185, 0.333);
+  border-top-right-radius: 10rem;
+  border-top-left-radius: 10rem;
+  border-bottom-right-radius: 10rem;
+  border-bottom-left-radius: 10rem;
+}
+
+
+
+.scroll::-webkit-scrollbar-track-piece {
+  background-color: #dce0e4;
+  height: 3rem;
+  border-top-right-radius: 10rem;
+  border-top-left-radius: 10rem;
+  border-bottom-right-radius: 10rem;
+  border-bottom-left-radius: 10rem;
+}
