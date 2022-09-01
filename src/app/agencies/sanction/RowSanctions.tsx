@@ -12,14 +12,14 @@ export const RowSanctions = ({ values }: { values: Sanction}) => {
             <td>{values.tipo}</td>
             <td>
                 {' '}
-                {DateTime.fromSeconds(values.fecha_inicio).toFormat(
+                {DateTime.fromMillis(values.fecha_inicio).toFormat(
                     'dd/MM/yyyy'
                 )}{' '}
             </td>
             
             <td>
                 {' '}
-                {DateTime.fromSeconds(values.fecha_fin).toFormat(
+                {DateTime.fromMillis(values.fecha_fin).toFormat(
                     'dd/MM/yyyy'
                 )}{' '}
             </td>
