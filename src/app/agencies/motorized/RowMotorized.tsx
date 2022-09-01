@@ -87,9 +87,7 @@ export const RowMotorized = ({ values }: { values: Motorized }) => {
         )}
       </td>
       <td>
-        <Link
-          href={`/dashboard/agencias/${idAgency}/motorizados/${values.id}/reportes`}
-        >
+        <Link href={`/agencias/${idAgency}/motorizados/${values.id}/reportes`}>
           <a className='btn btn-primary btn-sm'>
             <FaClipboard />
           </a>
