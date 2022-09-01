@@ -1,4 +1,5 @@
 import { FaListUl } from 'react-icons/fa';
+import { InlineInput } from '../../../components/Inputs/InlineInput';
 import { Report } from '../../../types/report';
 import { currencyFormat, formatPercent } from '../../../utils/strFormat';
 
@@ -7,11 +8,15 @@ export const RowReports = ({ values }: { values: Report }) => {
     <tr>
       <td> {values.cantidad_pedidos} </td>
       <td> {values.nombreReporte} </td>
-      <td> {values.observacion} </td>
+      <td>
+        <InlineInput value={values.observacion} />
+      </td>
       <td> {currencyFormat(values.deuda)} </td>
       <td> {currencyFormat(values.deuda)} </td>
       <td> {currencyFormat(values.deuda)} </td>
-      <td> {formatPercent(values.porcentaje)} </td>
+      <td>
+        <InlineInput value={formatPercent(values.porcentaje)} />
+      </td>
       <td> {values.estado} </td>
       <td>
         {values.registro_horas && (
