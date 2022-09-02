@@ -1,6 +1,7 @@
 import { Motorized } from '../../types/motorized';
 import { DateTime } from 'luxon';
 import { FaPen, FaUserAltSlash } from 'react-icons/fa';
+import { ImProfile } from "react-icons/im";
 import Link from 'next/link';
 
 
@@ -27,7 +28,7 @@ export const RowMotorized = ({ values }: { values: Motorized }) => {
             </button>
           </Link>
 
-          <button className='btn btn-error btn-sm'>
+          <button className='btn btn-error btn-sm mr-3'>
             <FaUserAltSlash />
           </button>
 
@@ -36,8 +37,8 @@ export const RowMotorized = ({ values }: { values: Motorized }) => {
             as={`motorizados/${values.id}/cartilla`}
           >
             <a>
-              <button className='btn btn-error btn-sm'>
-                <FaUserAltSlash />
+              <button className='btn btn-info btn-sm'>
+                <ImProfile />
               </button>
             </a>
           </Link>
