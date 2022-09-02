@@ -1,34 +1,36 @@
 import { useRouter } from 'next/router';
 import Modal from 'react-modal';
-import {ModalInfo} from './../../../../components/Motorized/modalInfo';
+import Motorized from './../../[idMotorized]/../index';
+import { ModalInfo } from './../../../../components/Motorized/ModalInfo';
 
 Modal.setAppElement("#__next");
 const Cartilla = () => {
     const customStyles = {
         content: {
-          top: '15%',
-          left: '45%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          borderRadius: '2rem',
-          width: '80%',
-          transform: 'translate(-40%, -10%)',
+            top: '15%',
+            left: '42%',
+            height: '27rem',
+            borderRadius: '2rem',
+            width: '80%',
+            transform: 'translate(-40%, -10%)',
+           
         },
-      };
+    };
     const router = useRouter();
     const { idMotorized } = router.query;
     return (
-        <div >
+        <>
+            <Motorized />
             <Modal
                 isOpen={!! `motorizados/${idMotorized}/cartilla`}
                 onRequestClose={() => router.push("/motorizados")}
                 style={customStyles}
-
+                
             >
-                <ModalInfo/>
+                <ModalInfo />
             </Modal>
-        </div>
+        </>
+
     );
 }
 export default Cartilla;

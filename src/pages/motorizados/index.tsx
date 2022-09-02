@@ -8,8 +8,9 @@ import { Dashboard } from '../../layout/Dashboard/Dashboard';
 const Motorized = () => {
   return (
     <Dashboard>
-      <div>
+
         <FirebaseDataTable
+        
           headers={[
             'D.N.I',
             'TELEFONO',
@@ -21,7 +22,7 @@ const Motorized = () => {
           RowComponent={RowMotorized}
           qi={query(collection(db_client, 'users_motorizados'), orderBy('id'))}
         />
-      </div>
+      
     </Dashboard>
   );
 };
