@@ -68,6 +68,18 @@ export const Navbar = () => {
                 </a>
               </Link>
             </li>
+            <li>
+              <Link href='/empresas'>
+                <a
+                  className={
+                    searchPath('empresas') ? 'text-blue-500 font-bold' : ''
+                  }
+                >
+                  {' '}
+                  Empresas{' '}
+                </a>
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
