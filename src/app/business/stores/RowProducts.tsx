@@ -12,10 +12,30 @@ export const RowProducts = ({ values }: { values: Product }) => {
                         width={64}
                         height={64}
                         alt={values.img}
-
                     />
                 </td>
-                <td>{values.name}</td>
+                <td>
+                    <ul>
+                        <li className='font-semibold text-[16px]'>{(values.name)}</li>
+                        <li className='text-sm font-mediun '> {values.descripcion}</li>
+
+                    </ul>
+                </td>
+                <td>
+                    {
+                        values.tipos.map((tipo) =>
+                            <>
+                                {
+                                (!tipo.price) && !tipo.name
+                                    ? ' '
+                                    : tipo.name + '  ' + 'S./ ' + Math.round(tipo.price).toFixed(2) + ' / '
+                            
+                                }   
+                            </>
+                        )
+
+                    }
+                </td>
                 <td>
                     <Link href={`/empresas`}>
                         <button className='btn btn-primary btn-sm mr-3 mt-1' >

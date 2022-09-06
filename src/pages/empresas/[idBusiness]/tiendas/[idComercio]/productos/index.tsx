@@ -16,6 +16,7 @@ const Products = () => {
             headers={[
                 'Imagen',
                 'Nombre',
+                'Precio/Variedades',
                 'Acciones'
             ]}
                 RowComponent={RowProducts}

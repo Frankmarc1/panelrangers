@@ -97,7 +97,7 @@ export const FirebaseDataTable = (props: Props) => {
               <thead>
                 <tr>
                   {React.Children.toArray(
-                    props.headers.map((header) => <th className={`${style.zindex}`} >{header}</th>)
+                    props.headers.map((header) => <th className={`${style.zindex} font-bold`} >{header}</th>)
                   )}
                 </tr>
               </thead>
