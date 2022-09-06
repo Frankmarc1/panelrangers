@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { Store } from '../../../types/store';
-import { IoMdBusiness } from 'react-icons/io';
+import router from 'next/router';
+
 
 interface Nombres {
     name: string;
@@ -23,6 +24,9 @@ export const RowStores = ({ values }: { values: Store }) => {
                 setLoading(false);
             });
     }, []);
+
+    const { idBusiness } = router.query;
+
     return (
         <>
             <tr>
@@ -47,7 +51,7 @@ export const RowStores = ({ values }: { values: Store }) => {
                         </label>
                     </div>
 
-                    <Link href={`/empresas/${values.id}/tiendas/productos/`}>
+                    <Link href={`/empresas/${idBusiness}/tiendas/${values.id}/productos/`}>
                         <button className='btn btn-primary btn-sm mr-3 mt-1' >
                             Productos
                         </button>

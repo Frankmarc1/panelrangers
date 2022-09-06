@@ -5,6 +5,6 @@ export interface Product{
     categoria: string;
     descripcion: string;
     id: string;
-    imagen: string;
+    img: string;
     name: string;
 }
