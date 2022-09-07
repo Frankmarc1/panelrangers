@@ -6,7 +6,6 @@ import {
   limit,
   limitToLast,
   onSnapshot,
-  orderBy,
   Query,
   query,
   QueryDocumentSnapshot,
@@ -92,7 +91,9 @@ export const FirebaseDataTable = (props: Props) => {
         <Spinner />
       ) : (
         <>
-          <div className={`w-full overflow-auto h-auto max-h-[29.3rem] ${style.scroll} mb-4`}>
+          <div
+            className={`w-full overflow-auto h-auto max-h-[29.3rem] ${style.scroll} mb-4`}
+          >
             <table className='table w-full h-full table-compact'>
               <thead>
                 <tr>
