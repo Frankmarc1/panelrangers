@@ -16,6 +16,7 @@ const Products = () => {
             headers={[
                 'Imagen',
                 'Nombre',
+                'Categorias',
                 'Precio/Variedades',
                 'Acciones'
             ]}

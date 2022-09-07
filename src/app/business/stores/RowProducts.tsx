@@ -1,7 +1,39 @@
 import Link from 'next/link'
+import { db_client } from '../../../firebase/client';
+import { useRouter } from 'next/router';
+import { doc, getDoc } from "firebase/firestore";
+import { useState, useEffect } from 'react';
 import { Product } from '../../../types/product';
+interface Category {
+    name: string;
+}
 
 export const RowProducts = ({ values }: { values: Product }) => {
+    const [nameCategoria, setNamecategoria] = useState('');
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
+    const { idBusiness } = router.query;
+    const { idComercio } = router.query;
+
+    useEffect(() => {
+        const listCategorias = async () => {
+            const docRef = doc(db_client, `/empresas/${idBusiness}/comercios/${idComercio}/categorias/${values.categoria}`);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const { name } = docSnap.data() as Category;
+                setNamecategoria(name);
+                console.log("Document data:", docSnap.data());
+
+            } else {
+
+                console.log("No such document!");
+
+            }
+        }
+        listCategorias();
+        setLoading(false);
+    }, []);
 
     return (
         <>
@@ -21,17 +53,24 @@ export const RowProducts = ({ values }: { values: Product }) => {
 
                     </ul>
                 </td>
+                <td>{!loading && nameCategoria}</td>
                 <td>
                     {
                         values.tipos.map((tipo) =>
-                            <>
+                            <span>
+
                                 {
-                                (!tipo.price) && !tipo.name
-                                    ? ' '
-                                    : tipo.name + '  ' + 'S./ ' + Math.round(tipo.price).toFixed(2) + ' / '
-                            
-                                }   
-                            </>
+                                    (!tipo.name)
+                                        ? ''
+                                        : tipo.name} {(!tipo.price)
+                                            ? ''
+                                            : 'S/. ' + (Math.round(tipo.price).toFixed(2) + ' ')
+                                }
+
+
+                            </span>
+
+
                         )
 
                     }
