@@ -1,6 +1,7 @@
 import { collection, orderBy, query } from 'firebase/firestore';
+import Head from 'next/head';
 import Link from 'next/link';
-import { IoIosAddCircle } from "react-icons/io";
+import { IoIosAddCircle } from 'react-icons/io';
 
 import { RowAgencies } from '../../app/agencies/RowAgencies';
 import { FirebaseDataTable } from '../../components/FirebaseDataTable/FirebaseDataTable';
@@ -10,30 +11,33 @@ import { Dashboard } from '../../layout/Dashboard/Dashboard';
 const Agencies = () => {
   return (
     <Dashboard>
-      <div className='card  bg-white boder'>
-      <div className='card-header  mx-[1rem] py-2'>
-          <div className='flex justify-between'>
-            <h3 className="card-title">Lista de Agentes</h3>
-            <Link href={`#`}>
-              <button type="button" className="btn btn-primary btn-sm"><span className='text-xl mr-2'><IoIosAddCircle /></span>Agregar Agencias</button>
+      <Head>
+        <title> Agencias </title>
+      </Head>
+      <div className='mx-[.4rem]'>
+        <div className='mb-2 flex justify-end'>
+          <Link href={`#`}>
+            <button type='button' className='btn btn-primary btn-sm'>
+              <span className='text-xl mr-2'>
+                <IoIosAddCircle />
+              </span>
+              Agregar Agencias
+            </button>
+          </Link>
+        </div>
 
-            </Link>
-          </div>
-        </div>
-        <div className='mx-[1rem] mb-2'>
-          <FirebaseDataTable
-            headers={[
-              'NOMBRE',
-              'DEPARTAMENTO',
-              'DIRECCION',
-              'ESTADO',
-              'FECHA DE REGISTRO',
-              'ACCIONES',
-            ]}
-            RowComponent={RowAgencies}
-            qi={query(collection(db_client, 'empresas_agencia'), orderBy('id'))}
-          />
-        </div>
+        <FirebaseDataTable
+          headers={[
+            'NOMBRE',
+            'DEPARTAMENTO',
+            'DIRECCION',
+            'ESTADO',
+            'FECHA DE REGISTRO',
+            'ACCIONES',
+          ]}
+          RowComponent={RowAgencies}
+          qi={query(collection(db_client, 'empresas_agencia'), orderBy('id'))}
+        />
       </div>
     </Dashboard>
   );
