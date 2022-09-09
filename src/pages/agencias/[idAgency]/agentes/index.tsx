@@ -14,35 +14,32 @@ const Agents = () => {
 
   return (
     <Dashboard>
-      <div className='card bg-white border'>
-        <div className='card-header  mx-[1rem] py-2'>
-          <div className='flex justify-between'>
-            <h3 className='card-title'>Lista de Agentes</h3>
-            <Link href={`/agencias/${idAgency}/agentes/add`}>
-              <button type="button" className="btn btn-primary btn-sm"><span className='text-xl mr-2'><IoIosAddCircle /></span>Agregar Empresa</button>
 
-            </Link>
-          </div>
-        </div>
-        <div className='mx-[1rem]'>
-          <FirebaseDataTable
-            RowComponent={RowAgent}
-            headers={['Logo', 'Nombre', 'Dirreción', 'Estado', 'Acciones']}
-            qi={query(
-              collection(
-                db_client,
-                `empresas_agencia/${idAgency}/agencia_empresas`
-              ),
-              where(
-                'reference_agencia',
-                '==',
-                doc(db_client, `empresas_agencia/${idAgency}`)
-              ),
-              orderBy('nombre', 'asc')
-            )}
-          />
-        </div>
+      <div className='flex justify-end mr-[1rem] mb-2'>
+        <Link href={`/agencias/${idAgency}/agentes/add`}>
+          <button type="button" className="btn btn-primary btn-sm"><span className='text-xl mr-2'><IoIosAddCircle /></span>Agregar Empresa</button>
+
+        </Link>
       </div>
+      <div className='mx-[1rem]'>
+        <FirebaseDataTable
+          RowComponent={RowAgent}
+          headers={['Logo', 'Nombre', 'Dirreción', 'Estado', 'Acciones']}
+          qi={query(
+            collection(
+              db_client,
+              `empresas_agencia/${idAgency}/agencia_empresas`
+            ),
+            where(
+              'reference_agencia',
+              '==',
+              doc(db_client, `empresas_agencia/${idAgency}`)
+            ),
+            orderBy('nombre', 'asc')
+          )}
+        />
+      </div>
+
     </Dashboard>
   );
 };

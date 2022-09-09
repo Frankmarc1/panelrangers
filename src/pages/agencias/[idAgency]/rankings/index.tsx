@@ -14,15 +14,12 @@ const Ranking = () => {
 
   return (
     <Dashboard>
-      <div className='card bg-white border'>
-        <div className='card-header  mx-[1rem] py-2'>
-          <div className='flex justify-between'>
-            <h3 className='card-title'>Lista de Agentes</h3>
+          <div className='flex justify-end mb-2 mr-[1rem]'>
+         
             <Link href={`/agencias/${idAgency}/rankings/add`}>
               <button type="button" className="btn btn-primary btn-sm"><span className='text-xl mr-2'><IoIosAddCircle /></span>Agregar Rankings</button>
 
             </Link>
-          </div>
         </div>
         <div className='mx-[1rem]'>
           <FirebaseDataTable
@@ -36,7 +33,6 @@ const Ranking = () => {
             )}
           />
         </div>
-      </div>
     </Dashboard>
   );
 };
