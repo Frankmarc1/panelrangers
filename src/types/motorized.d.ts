@@ -33,6 +33,7 @@ export interface Motorized {
   movilidad: {
     color: string;
     expiracionBrevete: string;
+    expiracionSoat: string;
     marca: string;
     placa: string;
   };
@@ -52,7 +53,7 @@ export interface Motorized {
   reference_agencia: DocumentReference;
   reference_fase: DocumentReference;
   reference_master: DocumentReference;
-  status: boolean;
+  status: string;
   timeUp: Timestamp;
   timeUpdate: Timestamp;
   tipo_ranger: string;
