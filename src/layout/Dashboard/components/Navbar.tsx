@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
-import { FaUserTie,FaMotorcycle } from "react-icons/fa";
+import { AiFillHome } from "react-icons/ai";
+import { FaUserTie, FaMotorcycle, FaStore } from "react-icons/fa";
 import { BsFillPersonCheckFill } from "react-icons/bs";
 import { ImOffice } from "react-icons/im";
 import { HiOfficeBuilding } from "react-icons/hi";
@@ -20,7 +21,7 @@ export const Navbar = () => {
           ${searchPath('usuarios') ? 'text-blue-500 font-bold' : ''}`
           }
         >
-          <div className='mr-3 text-slate-600 text-xl'><FaUserTie/></div>
+          <div className='mr-3 text-slate-600 text-xl'><FaUserTie /></div>
           {' '}
           Usuarios
           {' '}
@@ -34,7 +35,7 @@ export const Navbar = () => {
            ${searchPath('subs') ? 'text-blue-500 font-bold' : ''}`
           }
         >
-          <div className='mr-3 text-slate-600 text-xl'><BsFillPersonCheckFill/></div>
+          <div className='mr-3 text-slate-600 text-xl'><BsFillPersonCheckFill /></div>
           {' '}
           Subscriciones{' '}
         </a>
@@ -72,7 +73,7 @@ export const Navbar = () => {
             flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600
             ${searchPath('empresas') ? 'text-blue-500 font-bold' : ''}`
           }
-          
+
         >
           <div className='mr-3 text-slate-600 text-xl'><HiOfficeBuilding /></div>
           {' '}
@@ -80,114 +81,49 @@ export const Navbar = () => {
         </a>
       </Link>
 
+      <Link href='/sectores-economicos'>
+        <a
+          className={`
+            flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600
+            ${searchPath('empresas') ? 'text-blue-500 font-bold' : ''}`
+          }
 
+        >
+          <div className='mr-3 text-slate-600 text-[1.1rem]'><FaStore /></div>
+          {' '}
+          Sectores Economicos{' '}
+        </a>
+      </Link>
+
+      <Link href='/categorias_principales'>
+        <a
+          className={`
+            flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600
+            ${searchPath('empresas') ? 'text-blue-500 font-bold' : ''}`
+          }
+
+        >
+          <div className='mr-3 text-slate-600 text-[1.1rem]'><FaStore /></div>
+          {' '}
+          Categorias Principales {' '}
+        </a>
+      </Link>
+
+      <Link href='/secciones'>
+        <a
+          className={`
+            flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600
+            ${searchPath('empresas') ? 'text-blue-500 font-bold' : ''}`
+          }
+
+        >
+          <div className='mr-3 text-slate-600 text-[1.1rem]'><AiFillHome /></div>
+          {' '}
+          Secciones {' '}
+        </a>
+      </Link>
     </aside>
 
   );
 
-  /*return (
-    <nav className='navbar bg-base-100 w-full'>
-      <div className='navbar-start'>
-        <div className='dropdown'>
-          <label tabIndex={0} className=' btn btn-ghost btn-circle'>
-            <FaBars />
-          </label>
-          <ul
-            tabIndex={0}
-            className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
-          >
-            <li>
-              <Link href={'/usuarios'}>
-                <a
-                  className={
-                    searchPath('usuarios') ? 'text-blue-500 font-bold' : ''
-                  }
-                >
-                  {' '}
-                  Usuarios{' '}
-                </a>
-              </Link>
-            </li>
-
-            <li>
-              <Link href='/subs'>
-                <a
-                  className={
-                    searchPath('subs') ? 'text-blue-500 font-bold' : ''
-                  }
-                >
-                  {' '}
-                  Subscriciones{' '}
-                </a>
-              </Link>
-            </li>
-
-            <li>
-              <Link href='/motorizados'>
-                <a
-                  className={
-                    searchPath('motorizados') ? 'text-blue-500 font-bold' : ''
-                  }
-                >
-                  {' '}
-                  Motorizados{' '}
-                </a>
-              </Link>
-            </li>
-
-            <li>
-              <Link href='/agencias'>
-                <a
-                  className={
-                    searchPath('agencias') ? 'text-blue-500 font-bold' : ''
-                  }
-                >
-                  {' '}
-                  Agencias{' '}
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/empresas'>
-                <a
-                  className={
-                    searchPath('empresas') ? 'text-blue-500 font-bold' : ''
-                  }
-                >
-                  {' '}
-                  Empresas{' '}
-                </a>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className='navbar-center'>
-        <Link href={'/dashboard'}>
-          <a className='btn btn-ghost normal-case text-xl'>Rangers Dashboard</a>
-        </Link>
-      </div>
-
-      <div className='navbar-end'>
-        <div className='dropdown dropdown-end'>
-          <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
-            <div className='w-10 rounded-full'>
-              <img src='/Usuario.png' />
-            </div>
-          </label>
-          <ul
-            tabIndex={0}
-            className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
-          >
-            <li>
-              <a>Cerrar sesion</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-       </nav>
-                
-                
-              
-  );*/
 };
