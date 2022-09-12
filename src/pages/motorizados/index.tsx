@@ -8,21 +8,18 @@ import { Dashboard } from '../../layout/Dashboard/Dashboard';
 const Motorized = () => {
   return (
     <Dashboard>
-
-        <FirebaseDataTable
-        
-          headers={[
-            'D.N.I',
-            'TELEFONO',
-            'NOMBRE Y APELLIDOS',
-            'DATOS EN LA APP',
-            'FECHA DE REGISTRO',
-            'ACCIONES',
-          ]}
-          RowComponent={RowMotorized}
-          qi={query(collection(db_client, 'users_motorizados'), orderBy('id'))}
-        />
-      
+      <FirebaseDataTable
+        headers={[
+          'D.N.I',
+          'TELEFONO',
+          'NOMBRE Y APELLIDOS',
+          'DATOS EN LA APP',
+          'FECHA DE REGISTRO',
+          'ACCIONES',
+        ]}
+        RowComponent={RowMotorized}
+        qi={query(collection(db_client, 'users_motorizados'), orderBy('id'))}
+      />
     </Dashboard>
   );
 };
