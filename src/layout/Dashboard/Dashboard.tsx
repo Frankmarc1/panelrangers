@@ -13,7 +13,7 @@ export const Dashboard = ({ children }: props) => {
   return (
     <>
       <Toaster
-        position='top-center'
+        position='top-right'
         gutter={8}
         reverseOrder={false}
         toastOptions={{ duration: 5000 }}
