@@ -1,14 +1,13 @@
-import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
+import { DetailedHTMLProps, forwardRef, InputHTMLAttributes } from 'react';
 
-export const FloatingInput = (
-  props: DetailedHTMLProps<
-    InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >
-) => {
+export const FloatingInput = forwardRef<
+  HTMLInputElement,
+  DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+>(({ ...props }, ref) => {
   return (
     <div className='relative w-full'>
       <input
+        ref={ref /* Pass ref */}
         className='input input-md w-full mb-4 block px-2.8 pb-2.5 pt-4 text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
         {...props}
       />
@@ -20,4 +19,4 @@ export const FloatingInput = (
       </label>
     </div>
   );
-};
+});
