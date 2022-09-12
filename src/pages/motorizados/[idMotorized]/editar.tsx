@@ -1,222 +1,299 @@
-import React from 'react';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { GetServerSideProps } from 'next';
+import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { editMotorized } from '../../../app/motorized/helpers/editMotorized';
+
+import { FloatingInput } from '../../../components/Inputs/FloatingInput';
+import { db_client } from '../../../firebase/client';
 import { Dashboard } from '../../../layout/Dashboard/Dashboard';
-const editar = () => {
+import { Agency } from '../../../types/agency';
+import { Motorized } from '../../../types/motorized';
+import { Params } from '../../../types/params';
+import { Phase } from '../../../types/phase';
+
+interface Props {
+  motorized: Motorized;
+  phases: Phase[];
+  agencies: Agency[];
+  idPhase: string;
+  idAgency: string;
+}
+
+export interface MotorizedFields {
+  dni: string;
+  name: string;
+  lastName: string;
+  phone: string;
+  brand: string;
+  license_plate: string;
+  color: string;
+  date_exp_soat: string;
+  date_exp_license: string;
+  data_app: string;
+  phase: string;
+  agency: string;
+  type_contract: string;
+  percent: number;
+  photo: FileList;
+}
+
+export const getServerSideProps: GetServerSideProps<{}, Params> = async (
+  req
+) => {
+  const phases = (await getDocs(collection(db_client, 'fases'))).docs.map(
+    (doc) => doc.data()
+  );
+  const agencies = (
+    await getDocs(collection(db_client, 'empresas_agencia'))
+  ).docs.map((doc) => doc.data());
+  const snap = await getDoc(
+    doc(db_client, 'users_motorizados/' + req.params?.idMotorized)
+  );
+  let idPhase,
+    idAgency = '';
+
+  if (!snap.exists()) {
+    return {
+      redirect: {
+        destination: '/motorizados',
+        permanent: false,
+      },
+    };
+  }
+
+  const data = snap.data();
+
+  if (data?.reference_fase) {
+    idPhase = (await getDoc(data?.reference_fase)).id;
+  }
+
+  if (data?.reference_agencia) {
+    idAgency = (await getDoc(data?.reference_agencia)).id;
+  }
+
+  return {
+    props: {
+      phases,
+      agencies: JSON.parse(JSON.stringify(agencies)),
+      motorized: JSON.parse(JSON.stringify(data)),
+      idPhase,
+      idAgency,
+    },
+  };
+};
+
+const EditMotorized = ({
+  motorized,
+  phases,
+  agencies,
+  idAgency,
+  idPhase,
+}: Props) => {
+  const { register, setValue, handleSubmit } = useForm<MotorizedFields>();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setValue('dni', motorized.profile.dni);
+    setValue('name', motorized.profile.name);
+    setValue('lastName', motorized.profile.lastName);
+    setValue('phone', motorized.phone);
+    setValue('brand', motorized.movilidad.marca);
+    setValue('license_plate', motorized.movilidad.placa);
+    setValue('color', motorized.movilidad.color);
+    setValue('date_exp_soat', motorized.movilidad.expiracionSoat);
+    setValue('date_exp_license', motorized.movilidad.expiracionBrevete);
+    setValue('data_app', motorized.activo + '');
+    setValue('type_contract', motorized.tipo_ranger);
+    setValue('phase', idPhase);
+    setValue('agency', idAgency);
+    setValue('percent', motorized.porcentaje);
+  }, []);
+
   return (
-    <Dashboard>
-      <section className='container m-auto'>
-        <div className='card bg-base-100 shadow-xl pt-[1rem]'>
-          <div className='card-header border-b'>
-            <h3 className='text-lg font-md font-medium flex place-content-center mt-[-0.5rem]'>
-              Editar Motorizado
-            </h3>
+    <>
+      <Dashboard>
+        <Head>
+          <title> Editar motorizado </title>
+        </Head>
+        <section>
+          <div className='card bg-base-100 shadow-xl pt-[1rem]'>
+            <div className='card-body'>
+              <form
+                autoComplete='off'
+                onSubmit={handleSubmit(async (data) => {
+                  try {
+                    setLoading(true);
+                    await editMotorized(
+                      data,
+                      'NB68AOkbkoNuQamclUuVuU5bVHG2',
+                      motorized
+                    );
+                  } finally {
+                    setLoading(false);
+                  }
+                })}
+              >
+                <div className='mb-3'>
+                  <h2 className='text-sm font-bold mb-2'>Datos personales</h2>
+                  <div className='mb-2 grid grid-cols-4 gap-4'>
+                    <div>
+                      <FloatingInput placeholder='D.N.I' {...register('dni')} />
+                    </div>
+                    <div>
+                      <FloatingInput
+                        placeholder='Nombres'
+                        {...register('name')}
+                      />
+                    </div>
+                    <div>
+                      <FloatingInput
+                        placeholder='Apellidos'
+                        {...register('lastName')}
+                      />
+                    </div>
+                    <div>
+                      <FloatingInput
+                        placeholder='Telefono'
+                        {...register('phone')}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className='block'>
+                      <span className='sr-only'>Foto</span>
+                      <input
+                        type='file'
+                        className='block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100'
+                        {...register('photo')}
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                <div className='mb-3'>
+                  <h2 className='text-sm font-bold mb-2'>Datos del vehiculo</h2>
+
+                  <div className='mb-2 grid gap-4 grid-cols-3'>
+                    <div>
+                      <FloatingInput
+                        placeholder='Marca'
+                        {...register('brand')}
+                      />
+                    </div>
+                    <div>
+                      <FloatingInput
+                        placeholder='Placa'
+                        {...register('license_plate')}
+                      />
+                    </div>
+                    <div>
+                      <FloatingInput
+                        placeholder='Color'
+                        {...register('color')}
+                      />
+                    </div>
+                  </div>
+
+                  <div className='grid grid gap-4 grid-cols-2'>
+                    <div>
+                      <FloatingInput
+                        placeholder='Fecha vencimiento del S.O.A.T'
+                        type={'date'}
+                        {...register('date_exp_soat')}
+                      />
+                    </div>
+
+                    <div>
+                      <FloatingInput
+                        placeholder='Fecha vencimiento del brevete'
+                        type={'date'}
+                        {...register('date_exp_license')}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className='text-sm font-bold mb-2'>
+                    Datos para la empresa
+                  </h2>
+                  <div className='mb-2 grid grid-cols-4 gap-4'>
+                    <select
+                      defaultValue={''}
+                      id='datos_app'
+                      className='select input-md w-full mb-4 block px-2.8 pb-2.5 pt-4 text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                      {...register('data_app')}
+                    >
+                      <option value={''}>Seleccionar datos </option>
+                      <option value='false'>Pendientes</option>
+                      <option value='true'>Copletados</option>
+                    </select>
+
+                    <select
+                      defaultValue={''}
+                      id='fases'
+                      className='select input-md w-full mb-4 block px-2.8 pb-2.5 pt-4 text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                      {...register('phase')}
+                    >
+                      <option value={''}>Seleccionar fase</option>
+                      {React.Children.toArray(
+                        phases.map((phase) => (
+                          <option value={phase.id}> {phase.name} </option>
+                        ))
+                      )}
+                    </select>
+
+                    <select
+                      className='select input-md w-full mb-4 block px-2.8 pb-2.5 pt-4 text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                      {...register('agency')}
+                      defaultValue={''}
+                    >
+                      <option value={''}>Seleccionar agencia</option>
+                      {React.Children.toArray(
+                        agencies.map((agency) => (
+                          <option value={agency.id}> {agency.nombre} </option>
+                        ))
+                      )}
+                    </select>
+                    <select
+                      className='select input-md w-full mb-4 block px-2.8 pb-2.5 pt-4 text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                      {...register('type_contract')}
+                      defaultValue={''}
+                    >
+                      <option value={''}>Seleccionar tipo de contrato</option>
+                      <option value='parttime'>Part time</option>
+                      <option value='comision'>Comisión</option>
+                    </select>
+                  </div>
+
+                  <div className='grid grid-cols-4 gap-4'>
+                    <div>
+                      <FloatingInput
+                        placeholder='Porcentaje'
+                        type={'number'}
+                        {...register('percent')}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type='submit'
+                  className='btn btn-primary w-full btn-sm'
+                  disabled={loading}
+                >
+                  {loading ? 'Actualizando...' : 'Actualizar Motorizado'}
+                </button>
+              </form>
+            </div>
           </div>
-
-          <h2 className=' ml-[2rem] text-lg font-medium'>Datos del Rangers</h2>
-          <div className='card-body mt-[-0.6rem]'>
-            <form>
-              <div className='grid grid-cols-4 gap-4'>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='dni' className='mb-2 font-semibold'>
-                    D.N.I
-                  </label>
-                  <input
-                    type='text'
-                    id='dni'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='name' className='mb-2 font-semibold'>
-                    Nombre(s)
-                  </label>
-                  <input
-                    type='text'
-                    id='name'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='surnames' className='mb-2 font-semibold'>
-                    Apellidos
-                  </label>
-                  <input
-                    type='text'
-                    id='surnames'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='phone' className='mb-2 font-semibold'>
-                    Teléfono
-                  </label>
-                  <input
-                    type='text'
-                    id='phone'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='datos_app' className='block mb-2 text-sm'>
-                    Datos en la App
-                  </label>
-                  <select
-                    id='datos_app'
-                    className='border py-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  >
-                    <option selected>Seleccionar</option>
-                    <option value='US'>Pendientes</option>
-                    <option value='CA'>Copletados</option>
-                  </select>
-                </div>
-
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='fases' className='block mb-2 text-sm'>
-                    Fases
-                  </label>
-                  <select
-                    id='fases'
-                    className='border py-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  >
-                    <option selected>Seleccionar</option>
-                    <option value='US'>Pendientes</option>
-                    <option value='CA'>Copletados</option>
-                  </select>
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='agencia' className='block mb-2 text-sm'>
-                    Agencia
-                  </label>
-                  <select
-                    id='agencia'
-                    className='border py-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  >
-                    <option selected>Seleccionar</option>
-                    <option value='US'>Pendientes</option>
-                    <option value='CA'>Copletados</option>
-                  </select>
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='por_rep' className='mb-2 font-semibold'>
-                    Porcentaje por reporte
-                  </label>
-                  <input
-                    type='text'
-                    id='por_rep'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='tip_rag' className='block mb-2 text-sm '>
-                    Tipo de Rangers
-                  </label>
-                  <select
-                    id='tip_rag'
-                    className='border py-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  >
-                    <option selected>Seleccionar</option>
-                    <option value='US'>Pendientes</option>
-                    <option value='CA'>Copletados</option>
-                  </select>
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label className='block mb-1 text-sm' htmlFor='act_fot'>
-                    Actualizar foto
-                  </label>
-                  <input
-                    className='text-wrap block w-full text-md  text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none  dark:border-gray-600 dark:placeholder-gray-400'
-                    id='act_fot'
-                    type='file'
-                  />
-                </div>
-              </div>
-              <h2 className=' ml-[.1rem] mt-4 mb-2 text-lg font-medium'>
-                Datos de su movilidad
-              </h2>
-
-              <div className='grid grid-cols-2 gap-5'>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='fec_vbre' className='mb-2 font-semibold'>
-                    Fecha de vencimiento del brevete
-                  </label>
-                  <input
-                    type='date'
-                    id='fec_vbre'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='fec_vbre' className='mb-2 font-semibold'>
-                    Fecha de vencimiento del brevete
-                  </label>
-                  <input
-                    type='date'
-                    id='fec_vbre'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-              </div>
-
-              <div className='grid grid-cols-4 gap-5'>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='marca' className='mb-2 font-semibold'>
-                    Marca
-                  </label>
-                  <input
-                    type='text'
-                    id='marca'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='placa' className='mb-2 font-semibold'>
-                    Placa
-                  </label>
-                  <input
-                    type='text'
-                    id='placa'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='color' className='mb-2 font-semibold'>
-                    color
-                  </label>
-                  <input
-                    type='text'
-                    id='color'
-                    className='w-full max-w-lg rounded-lg border border-slate-400 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40'
-                  />
-                </div>
-                <div className='mb-4 grid grid-cols-1'>
-                  <label htmlFor='tipo' className='block mb-2 text-sm '>
-                    Tipo
-                  </label>
-                  <select
-                    id='tipo'
-                    className='border py-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                  >
-                    <option selected>Seleccionar</option>
-                    <option value='US'>Auto</option>
-                    <option value='CA'>Motocicleta</option>
-                    <option value='CA'>Mototaxi</option>
-                  </select>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div className='card-footer text-muted border-t '>
-            <button
-              type='button'
-              className='text-gray-900 ml-[2rem] my-[1rem] bg-blue-400 border border-gray-300 focus:outline-none  hover:bg-blue-600 hover:text-white  focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700'
-            >
-              Actualizar Motorizado
-            </button>
-          </div>
-        </div>
-      </section>
-    </Dashboard>
+        </section>
+      </Dashboard>
+    </>
   );
 };
-export default editar;
+
+export default EditMotorized;
