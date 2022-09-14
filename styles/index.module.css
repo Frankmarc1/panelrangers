@@ -41,3 +41,7 @@
   border-bottom-right-radius: 10rem;
   border-bottom-left-radius: 10rem;
 }
+.gridCol2{
+  column-count: 2;
+  column-gap: 3;
+}
