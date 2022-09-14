@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { AiFillHome } from "react-icons/ai";
-import { FaUserTie, FaMotorcycle, FaStore } from "react-icons/fa";
+import { FaUserTie, FaMotorcycle, FaStore, FaPager } from "react-icons/fa";
 import { BsFillPersonCheckFill } from "react-icons/bs";
 import { ImOffice } from "react-icons/im";
 import { HiOfficeBuilding } from "react-icons/hi";
@@ -120,6 +120,20 @@ export const Navbar = () => {
           <div className='mr-3 text-slate-600 text-[1.1rem]'><AiFillHome /></div>
           {' '}
           Secciones {' '}
+        </a>
+      </Link>
+
+      <Link href='/lp'>
+        <a
+          className={`
+            flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600
+            ${searchPath('empresas') ? 'text-blue-500 font-bold' : ''}`
+          }
+
+        >
+          <div className='mr-3 text-slate-600 text-[1.1rem]'><FaPager /></div>
+          {' '}
+          Landing Page{' '}
         </a>
       </Link>
     </aside>
