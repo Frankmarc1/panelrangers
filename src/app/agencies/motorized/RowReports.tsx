@@ -1,21 +1,36 @@
+import { useRouter } from 'next/router';
 import { FaListUl } from 'react-icons/fa';
 import { InlineInput } from '../../../components/Inputs/InlineInput';
+import { Params } from '../../../types/params';
 import { Report } from '../../../types/report';
 import { currencyFormat, formatPercent } from '../../../utils/strFormat';
+import { saveObs } from './helpers/saveObs';
+import { savePercent } from './helpers/savePercent';
 
 export const RowReports = ({ values }: { values: Report }) => {
+  const { idMotorized } = useRouter().query as Params;
   return (
     <tr>
       <td> {values.cantidad_pedidos} </td>
       <td> {values.nombreReporte} </td>
       <td>
-        <InlineInput value={values.observacion} />
+        <InlineInput
+          value={values.observacion}
+          onSave={async (value) =>
+            await saveObs(value, idMotorized, values.idReporte)
+          }
+        />
       </td>
       <td> {currencyFormat(values.deuda)} </td>
       <td> {currencyFormat(values.deuda)} </td>
       <td> {currencyFormat(values.deuda)} </td>
       <td>
-        <InlineInput value={formatPercent(values.porcentaje)} />
+        <InlineInput
+          value={formatPercent(values.porcentaje)}
+          onSave={async (value) =>
+            await savePercent(parseFloat(value), idMotorized, values.idReporte)
+          }
+        />
       </td>
       <td> {values.estado} </td>
       <td>
