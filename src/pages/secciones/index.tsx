@@ -32,7 +32,7 @@ const Secciones = () => {
     return (
         <Dashboard>
 
-            <div className={`${styles.scroll} overflow-auto h-auto max-h-[31.2rem]`}>
+            <div className={`${styles.scroll} overflow-auto h-auto max-h-[35rem]`}>
                 {
                     data.map((d) => (
                         <div className={`flex justify-center mb-4`}>
