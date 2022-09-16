@@ -44,25 +44,6 @@ const Agents = () => {
           />
         </div>
       </div>
-      <div className='mx-[1rem]'>
-        <FirebaseDataTable
-          RowComponent={RowAgent}
-          headers={['Logo', 'Nombre', 'Dirreción', 'Estado', 'Acciones']}
-          qi={query(
-            collection(
-              db_client,
-              `empresas_agencia/${idAgency}/agencia_empresas`
-            ),
-            where(
-              'reference_agencia',
-              '==',
-              doc(db_client, `empresas_agencia/${idAgency}`)
-            ),
-            orderBy('nombre', 'asc')
-          )}
-        />
-      </div>
-
     </Dashboard>
   );
 };
