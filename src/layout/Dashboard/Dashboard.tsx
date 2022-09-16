@@ -70,7 +70,7 @@ export const Dashboard = ({ children }: props) => {
         <div
           className={` ${
             open ? 'w-72' : 'w-20 '
-          } bg-dark-purple h-screen p-5  pt-8 relative duration-300`}
+          } bg-dark-purple  p-5  pt-8 relative duration-300`}
         >
           <img
             src='/control.png'
@@ -114,7 +114,7 @@ export const Dashboard = ({ children }: props) => {
             ))}
           </ul>
         </div>
-        <div className='h-screen flex-1 p-7'>{children}</div>
+        <div className={`h-screen flex-1 p-7 ${ open ? 'max-w-[80.2%]': 'w-full'}`}>{children}</div>
       </div>
     </>
   );
