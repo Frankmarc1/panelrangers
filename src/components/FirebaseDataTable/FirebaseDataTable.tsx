@@ -21,7 +21,13 @@ import style from './styles/index.module.css';
 
 interface Props {
   qi: Query | CollectionReference;
-  RowComponent: ({ values }: { values: any }) => JSX.Element;
+  RowComponent: ({
+    values,
+    props,
+  }: {
+    values: any;
+    props?: any;
+  }) => JSX.Element;
   perPage?: number;
   headers: string[];
 }
@@ -98,7 +104,9 @@ export const FirebaseDataTable = (props: Props) => {
               <thead>
                 <tr>
                   {React.Children.toArray(
-                    props.headers.map((header) => <th className={`${style.zindex} font-bold`} >{header}</th>)
+                    props.headers.map((header) => (
+                      <th className={`${style.zindex} font-bold`}>{header}</th>
+                    ))
                   )}
                 </tr>
               </thead>
