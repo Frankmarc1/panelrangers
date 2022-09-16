@@ -98,7 +98,7 @@ export const FirebaseDataTable = (props: Props) => {
       ) : (
         <>
           <div
-            className={`w-full overflow-auto h-auto max-h-[29.3rem] ${style.scroll} mb-4`}
+            className={`overflow-auto h-auto min-h-[30rem] max-h-[29.3rem] ${style.scroll} mb-4`}
           >
             <table className='table w-full h-full table-compact'>
               <thead>
