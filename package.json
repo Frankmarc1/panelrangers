@@ -26,6 +26,7 @@
     "sweetalert2": "^11.4.29"
   },
   "devDependencies": {
+    "@tsndr/cloudflare-worker-jwt": "^2.0.1",
     "@types/js-cookie": "^3.0.2",
     "@types/luxon": "^3.0.0",
     "@types/node": "18.6.5",
