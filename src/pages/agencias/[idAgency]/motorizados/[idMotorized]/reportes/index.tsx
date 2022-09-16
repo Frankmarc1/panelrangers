@@ -175,16 +175,16 @@ const Reports = ({ nameOfMotorized }: Props) => {
 
       <FirebaseDataTable
         headers={[
-          '#pedidos',
+          '#ped',
           'Nombre',
           'Observacion',
           'Deuda',
           'Total',
-          'Descuentos',
-          'Porcentaje',
+          'Rebaja',
+          'Comisión',
           'Estado',
           'Horas',
-          'Acciones',
+          'Accion',
         ]}
         qi={query(
           collection(
