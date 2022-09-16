@@ -4,7 +4,7 @@ import { FaPenAlt, FaSave, FaTimesCircle } from 'react-icons/fa';
 
 interface Props {
   value: string;
-  onSave: (a: string, ...b: any) => Promise<any>;
+  onSave: (a: string) => Promise<any>;
 }
 
 export const InlineInput = ({ value, onSave }: Props) => {
@@ -43,8 +43,8 @@ export const InlineInput = ({ value, onSave }: Props) => {
         <div className='flex items-center'>
           <input
             type='text'
-            className='input input-bordered w-1/5 mr-2 input-sm'
-            defaultValue={value}
+            className='input input-bordered  mr-2 input-sm'
+            defaultValue={value.toString()}
             ref={ref}
           />
           <div className='flex'>
