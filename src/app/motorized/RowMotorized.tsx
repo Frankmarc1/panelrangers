@@ -13,7 +13,7 @@ export const RowMotorized = ({ values }: { values: Motorized }) => {
         <td> {values.profile.dni} </td>
         <td> {values.phone} </td>
         <td>
-          {values.profile.name} {values.profile.lastName}
+          <p className='truncate w-[16rem]'>{values.profile.name} {values.profile.lastName}</p>
         </td>
         <td> {values.activo ? 'Completados' : 'Sin completar'} </td>
         <td>
