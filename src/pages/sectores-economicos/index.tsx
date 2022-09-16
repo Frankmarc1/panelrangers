@@ -41,7 +41,7 @@ const EconomicSector = () => {
                             <FaSave />
                         </button>
                     </div>
-                    <div className={`overflow-auto h-auto max-h-[29.3rem] ${style.scroll}`}>
+                    <div className={`overflow-auto h-auto max-h-[33.3rem] ${style.scroll}`}>
                         {
                             data.map((x) => (
                                 <div className="p-6 grid grid-cols-2 gap-5">
