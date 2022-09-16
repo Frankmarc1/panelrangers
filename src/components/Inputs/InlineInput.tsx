@@ -31,7 +31,7 @@ export const InlineInput = ({ value, onSave }: Props) => {
   return (
     <div className='w-auto'>
       {!edit ? (
-        <p className='grid grid-cols-2'>
+        <p className='grid grid-cols-2 gap-[6.3rem]'>
           {' '}
           {value}{' '}
           <FaPenAlt
