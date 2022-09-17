@@ -6,8 +6,9 @@ export const RowMedal = ({ values }: { values: Medal }) => {
             <td>
                 <img src={values.imagen} alt='' width={64} height={64} />
             </td>
-            <td>{values.nombre} </td>
-            <td>{values.descripcion} </td>
+            <td>
+                {values.nombre}</td>
+            <td><p className="w-[25rem] truncate">{values.descripcion} </p> </td>
             <td></td>
         </tr>
     );
