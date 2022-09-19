@@ -1,11 +1,11 @@
-import { collection, doc, orderBy, query, where } from 'firebase/firestore';
+import { collection, orderBy, query } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 
 import { RowMedal } from '../../../../app/agencies/medal/RowMedal';
 import { FirebaseDataTable } from '../../../../components/FirebaseDataTable/FirebaseDataTable';
 import { db_client } from '../../../../firebase/client';
 import { Dashboard } from '../../../../layout/Dashboard/Dashboard';
-import MedalAdd from './add';
+
 import Link from 'next/link';
 
 
