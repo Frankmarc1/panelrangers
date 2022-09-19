@@ -29,13 +29,13 @@ export const InlineInput = ({ value, onSave }: Props) => {
   };
 
   return (
-    <div className='w-auto'>
+    <div className='w-auto '>
       {!edit ? (
         <p className='grid grid-cols-2 gap-[6.3rem]'>
           {' '}
           {value}{' '}
           <FaPenAlt
-            className='text-green-500 mx-2'
+            className='text-green-500 ml-5 '
             onClick={() => setEdit(true)}
           />{' '}
         </p>

@@ -40,7 +40,7 @@ export const RowReports = ({ values }: { values: Report }) => {
         />
       </td>
       <td >
-        <p className='ml-4'> {values.estado}</p> </td>
+        <p className='ml-5'> {values.estado}</p> </td>
       <td>
         {values.registro_horas && (
           <div className='badge badge-primary'>
