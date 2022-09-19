@@ -7,54 +7,34 @@ import { toast } from 'react-hot-toast';
 import { db_client, storage_client } from '../../../firebase/client';
 import { FloatingInput } from "../../../components/Inputs/FloatingInput";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+
 type Inputs = {
     benefic: number;
     description: String;
     status: boolean;
     id: string;
-    img: FileList;
+    img: FileList | string;
     name: string;
 }
 interface Medalll {
-    beneficio: number;
+    beneficio: Number;
     descripcion: String;
     estado: boolean;
     id: string;
-    imagen: FileList;
+    imagen: FileList | String;
     nombre: string;
 }
-export const FormMedal = () => {
+export const FormMedal = (): JSX.Element => {
     const [urlImg, setUrlImg] = useState('');
+
     const router = useRouter()
     const { idAgency } = router.query;
+    const {idMedal}=router.query;
+
+
+    console.log(urlImg)
 
     const { register, setValue, reset, handleSubmit } = useForm<Inputs>();
-    /*/useEffect(() => {
-        if (idAgency) {
-            getDoc(doc(db_client, `/empresas_agencia/${idAgency}/medallas/`))
-                .then((snap) => {
-                    if (snap.exists()) {
-                        const {
-                            beneficio,
-                            descripcion,
-                            estado,
-                            id,
-                            imagen,
-                            nombre,
-                        } = snap.data();
-                       
-                        setValue('benefic', beneficio);
-                        setValue('description', descripcion);
-                        setValue('name', estado);
-                        setValue('image', imagen);
-                    
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-    }, []);*/
     const renderImage = (evt: any) => {
         const blob = evt.target.files[0];
         const urlImg = URL.createObjectURL(blob);
@@ -63,38 +43,66 @@ export const FormMedal = () => {
     };
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
-        const docRef = doc(collection(db_client, `empresas_agencia/${idAgency}/medallas`));
+        const docRef = idMedal
+            ?  doc(db_client, `empresas_agencia/${idAgency}/medallas/${idMedal}`)
+            : doc(collection(db_client, `empresas_agencia/${idAgency}/medallas`));
 
         const imgRef = ref(
             storage_client,
             `empresas_agencia/${idAgency}/medallas/${docRef.id}/${Date.now()}`
         );
+        let imagen: string = '';
+
         if (!data.name) {
             toast.error("imgrese Nombre Porfavor...!")
             return;
         }
 
-        let img: string = '';
+
         if (data.img instanceof FileList) {
             await uploadBytes(imgRef, data.img[0]);
-            img = await getDownloadURL(imgRef);
+            imagen = await getDownloadURL(imgRef);
         } else {
-            img = data.img;
+            imagen = data.img;
         }
+
+        console.log(typeof (data.benefic))
 
         let obj: Medalll = {
             id: docRef.id,
-            beneficio: data.benefic,
+            beneficio: parseInt(data.benefic.toString()),
             descripcion: data.description,
             estado: true,
-            imagen: data.img,
+            imagen: imagen,
             nombre: data.name,
 
         };
+        console.log(obj);
         await setDoc(docRef, obj);
-        alert("medalla creada")
+        toast.success("Medalla Creada con Exito")
 
     }
+     useEffect(() => {
+        if (idAgency) {
+            getDoc(doc(db_client, `/empresas_agencia/${idAgency}/medallas/${idMedal}`))
+                .then((snap) => {
+                    if (snap.exists()) {
+                        const {
+                            beneficio,
+                            descripcion,
+                            nombre,
+                        } = snap.data();
+                       
+                        setValue('benefic', beneficio);
+                        setValue('description', descripcion);
+                        setValue('name', nombre);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    }, []);
     return (
         <div className="card bg-white pb-3  border">
             <div className="card-header border-b ">
