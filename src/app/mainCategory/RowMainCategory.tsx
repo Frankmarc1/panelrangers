@@ -20,7 +20,7 @@ export const RowMaincategory = ({ values }: { values: MainCategory }) => {
             <td>
                 <button
                     className=' btn-sm mr-3 text-primary text-xl'
-
+                    
                 >
                     <FaPencilAlt />
                 </button>
