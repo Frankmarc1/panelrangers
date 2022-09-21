@@ -1,10 +1,11 @@
 import { Dashboard } from "../../layout/Dashboard/Dashboard";
 import ListSectors from "../../app/sectorEconimic/ListSectors";
-const EconomicSector = ()=> {
+const modifyEconomicSector = () => {
     return (
         <Dashboard>
-            <ListSectors/>
+            <ListSectors />
         </Dashboard>
+
     );
 }
-export default EconomicSector;
+export default modifyEconomicSector;
