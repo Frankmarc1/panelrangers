@@ -22,8 +22,8 @@ const MainCategorys = () => {
           
             <FirebaseDataTable
                 headers={[
-                    'Categoria',
                     'Imagen',
+                    'Categoria',
                     'Acciones'
                 ]}
                 RowComponent={RowMaincategory}
