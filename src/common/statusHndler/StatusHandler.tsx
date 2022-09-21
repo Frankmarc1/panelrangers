@@ -17,8 +17,8 @@ export const StatusHandler: FC<Props> = ({
     const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
     const handleClick=()=>{
         (data.status===true)
-         ?  toast.success("sector Economico desactivado")
-         :  toast.success("sector Economico Activado")
+         ?  toast.success("Desactivado")
+         :  toast.success("Activado")
     }
     const handleStatus = (e: ChangeEvent<HTMLInputElement>, id: string): void => {
         setLoadingStatus(true);
