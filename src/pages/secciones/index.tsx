@@ -56,14 +56,16 @@ const Secciones = () => {
                                 </div>
                                 <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
                                     <div className="flex">
-                                        <button
-                                            type="button"
-                                            className="inline-block px-6 py-2.5 bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-slate-500 hover:shadow-lg focus:bg-blue-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mr-3">
-                                            <div className="flex">
-                                                <p className="mr-1 text-[0.9rem] mt-1"><FaPencilAlt /></p>
-                                                <p className="font-medium text-[1rem]">Editar</p>
-                                            </div>
-                                        </button>
+                                        <Link href={`secciones/${d.id}`}>
+                                            <button
+                                                type="button"
+                                                className="inline-block px-6 py-2.5 bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-slate-500 hover:shadow-lg focus:bg-blue-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mr-3">
+                                                <div className="flex">
+                                                    <p className="mr-1 text-[0.9rem] mt-1"><FaPencilAlt /></p>
+                                                    <p className="font-medium text-[1rem]">Editar</p>
+                                                </div>
+                                            </button>
+                                        </Link>
                                         <div className="form-control flex justify-end">
                                             <input type="checkbox" className="toggle toggle-primary h-[1.2rem] flex mb-2" checked />
                                         </div>
@@ -77,12 +79,12 @@ const Secciones = () => {
             </div>
             <div className="justify-center flex">
                 <Link href={"/secciones/add"}>
-                <button className=" w-3/4 border border-slate-400 bg-slate-300 font-medium  rounded-md" >
-                    <div className="flex justify-center py-4">
-                        <p className="mt-1 mr-2 text-xl"><IoMdAddCircle /></p>
-                        Agregar Home
-                    </div>
-                </button>
+                    <button className=" w-3/4 border border-slate-400 bg-slate-300 font-medium  rounded-md" >
+                        <div className="flex justify-center py-4">
+                            <p className="mt-1 mr-2 text-xl"><IoMdAddCircle /></p>
+                            Agregar Home
+                        </div>
+                    </button>
                 </Link>
             </div>
         </Dashboard>
