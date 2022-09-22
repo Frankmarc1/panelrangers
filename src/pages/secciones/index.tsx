@@ -8,6 +8,7 @@ import { db_client } from "../../firebase/client";
 import { Spinner } from "../../components/spinner/Spinner";
 import styles from '../../../styles/index.module.css';
 import { DataSection } from "../../components/Sections/DataSection";
+import Link from "next/link";
 
 
 const Secciones = () => {
@@ -75,12 +76,14 @@ const Secciones = () => {
                 }
             </div>
             <div className="justify-center flex">
+                <Link href={"/secciones/add"}>
                 <button className=" w-3/4 border border-slate-400 bg-slate-300 font-medium  rounded-md" >
                     <div className="flex justify-center py-4">
                         <p className="mt-1 mr-2 text-xl"><IoMdAddCircle /></p>
                         Agregar Home
                     </div>
                 </button>
+                </Link>
             </div>
         </Dashboard>
 
