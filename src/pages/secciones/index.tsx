@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
+import { StatusHandler } from "../../common/statusHndler/StatusHandler";
 import { collection, query, onSnapshot, DocumentData, DocumentReference, getDoc, doc } from "firebase/firestore";
 import { Dashboard } from "../../layout/Dashboard/Dashboard";
 import { db_client } from "../../firebase/client";
@@ -9,6 +10,7 @@ import { Spinner } from "../../components/spinner/Spinner";
 import styles from '../../../styles/index.module.css';
 import { DataSection } from "../../components/Sections/DataSection";
 import Link from "next/link";
+
 
 
 const Secciones = () => {
@@ -26,9 +28,9 @@ const Secciones = () => {
             }
         );
         onSubscribe;
-        console.log(data)
 
     }, []);
+
 
     return (
         <Dashboard>
@@ -56,6 +58,7 @@ const Secciones = () => {
                                 </div>
                                 <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
                                     <div className="flex">
+
                                         <Link href={`secciones/${d.id}`}>
                                             <button
                                                 type="button"
@@ -64,10 +67,15 @@ const Secciones = () => {
                                                     <p className="mr-1 text-[0.9rem] mt-1"><FaPencilAlt /></p>
                                                     <p className="font-medium text-[1rem]">Editar</p>
                                                 </div>
+
                                             </button>
+
                                         </Link>
                                         <div className="form-control flex justify-end">
-                                            <input type="checkbox" className="toggle toggle-primary h-[1.2rem] flex mb-2" checked />
+                                            <StatusHandler
+                                                collectionName="home"
+                                                data={d}
+                                            />
                                         </div>
                                     </div>
                                 </div>

@@ -33,7 +33,7 @@ const checkedElement = (id: string) => {
     const element = document.querySelector<HTMLInputElement>(
         `.type[id="${id}"]`
     );
-    if (element) element.checked=true;
+    if (element) element.checked = true;
 };
 
 const FormSections = () => {
@@ -170,7 +170,7 @@ const FormSections = () => {
             document.getElementById('desc_section')?.focus();
             return;
         }
-        if (!data.priority_section.trim()) {
+        if (!data.priority_section) {
             toast.error("ingrese Prioridad Porfavor");
             document.getElementById('priority_section')?.focus();
             return;
@@ -220,6 +220,7 @@ const FormSections = () => {
             reset();
         }
 
+
         setUpload(false);
 
 
@@ -230,12 +231,17 @@ const FormSections = () => {
         <div className="flex justify-center mt-[-1.5rem] mb-0">
             <div className="block rounded-lg shadow-lg bg-white w-full text-center">
                 <div className="card-header border-b py-1">
-                    <h3>Crear Seccion</h3>
+                    <h3>{
+                        (!idSection)
+                            ? 'Crear Seccion'
+                            : 'Actualizar Seccion'
+                    }</h3>
                 </div>
                 <div className="card-body mt-[-1rem] ">
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                         autoComplete="off"
+                        id="miForm"
                     >
                         <FloatingInput
                             type={"text"}
@@ -287,7 +293,7 @@ const FormSections = () => {
                                                         <div className="flex">
                                                             <input
                                                                 type="checkbox"
-                                                                className={`type mr-3 w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 type`}
+                                                                className={`type mr-3 w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`}
                                                                 value={x.path}
                                                                 id={x.id}
 
@@ -328,7 +334,21 @@ const FormSections = () => {
                         <button
                             type="submit"
                             className=" w-full mt-3 ml-1 inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-slate-500 hover:shadow-lg focus:bg-blue-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mr-3">
-                            Guardar
+                            {
+                                (!idSection)
+                                    ?
+                                    <p className="font-medium text-[1rem]">
+                                        {
+                                            (upload) ? 'Guardando...' : 'Guardar'
+                                        }
+                                    </p>
+                                    : <p className="font-medium text-[1rem]">
+                                        {
+                                            (upload) ? 'Actualizando...' : 'Actualizar'
+                                        }
+                                    </p>
+                            }
+                           
                         </button>
                     </form>
                 </div>
