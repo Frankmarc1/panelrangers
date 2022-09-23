@@ -46,16 +46,7 @@ export const FormMainCategorys = (): JSX.Element => {
             document.getElementById('nombre')?.focus();
             return;
         }
-        /*if(!idCategory){
-            document
-            .querySelectorAll<HTMLInputElement>('.sector')
-            .forEach((element) => {
-                if (element.checked===false) {
-                    toast.error("selleiona")
-                    return;
-                }
-            });
-        }*/
+
 
         setUpload(true);
 
