@@ -1,4 +1,4 @@
-import { FormMainCategorys } from "../../../components/MainCatories/FormMainCatories";
+import { FormMainCategorys } from "../../../app/MainCatories/FormMainCatories";
 const modifyMainCategory=()=>{
     return (  
             <FormMainCategorys/>

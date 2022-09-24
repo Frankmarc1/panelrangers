@@ -1,11 +1,11 @@
 import { Dashboard } from "../../../layout/Dashboard/Dashboard";
 import FormSections from "../../../app/sections/FormSections";
-const ModifySections=()=>{
-    return(
+const ModifySections = () => {
+    return (
         <Dashboard>
-            <FormSections/>
+            <FormSections />
         </Dashboard>
-   
+
     );
 }
 export default ModifySections;
