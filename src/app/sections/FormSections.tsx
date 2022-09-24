@@ -8,6 +8,8 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import styles from "../../../styles/index.module.css";
 import { Spinner } from "../../components/spinner/Spinner";
 import { FloatingInput } from "../../components/Inputs/FloatingInput";
+import { GetServerSideProps } from "next";
+import { Input } from "postcss";
 
 
 
@@ -27,13 +29,17 @@ interface Home {
     sectoresEconomicos?: DocumentReference[];
     comerciosReference?: DocumentReference[];
 }
+
 const commerceReference = collectionGroup(db_client, 'comercios');
 const seReference = collection(db_client, 'sector_economicos');
 const checkedElement = (id: string) => {
     const element = document.querySelector<HTMLInputElement>(
-        `.type[id="${id}"]`
+        `type[id="${id}"]`
     );
-    if (element) element.checked = true;
+
+    if (element) {
+        element.checked = true;
+    }
 };
 
 const FormSections = () => {
@@ -279,7 +285,7 @@ const FormSections = () => {
                             </div>
                         </div>
                         <div className={`flex  mr-3 w-full overflow-auto max-h-[17rem] ${styles.scroll}`}>
-                            <ul className="list-unstyled">
+                            <ul>
                                 {
                                     loading ?
                                         (
@@ -292,8 +298,8 @@ const FormSections = () => {
                                                     <li className="mb-5 text-reset">
                                                         <div className="flex">
                                                             <input
+                                                                className={`type mr-3  w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`}
                                                                 type="checkbox"
-                                                                className={`type mr-3 w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`}
                                                                 value={x.path}
                                                                 id={x.id}
 
@@ -348,7 +354,7 @@ const FormSections = () => {
                                         }
                                     </p>
                             }
-                           
+
                         </button>
                     </form>
                 </div>
