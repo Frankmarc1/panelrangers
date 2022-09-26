@@ -3,8 +3,7 @@ import { Business } from '../../types/business';
 import { DateTime } from 'luxon';
 import { FaPen, FaUserAltSlash } from 'react-icons/fa';
 import { ImProfile } from "react-icons/im";
-
-import Image from 'next/image';
+import { StatusHandler } from '../../common/statusHndler/StatusHandler';
 import Link from 'next/link';
 
 
@@ -14,7 +13,7 @@ export const RowBusiness = ({ values }: { values: Business }) => {
             <tr>
                 <td>
                     <img
-                        alt='hola que tal'
+                        alt='logo'
                         src={`${values.contentProfile.logo}`}
                         width={90}
                         height={90}
@@ -25,6 +24,12 @@ export const RowBusiness = ({ values }: { values: Business }) => {
                     <p className='w-[12rem] truncate '>
                         {values.contentProfile.descripcion}
                     </p>
+                </td>
+                <td>
+                    <StatusHandler
+                        collectionName='empresas'
+                        data={values}
+                     />
                 </td>
                 <td className=''>
                     <Link href={`empresas/${values.id}/tiendas`}>

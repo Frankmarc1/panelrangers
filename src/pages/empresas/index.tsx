@@ -11,6 +11,7 @@ const Business = () => {
                         'Imagen',
                         'Nombre',
                         'Descripcion',
+                        'Verificación',
                         'ACCIONES',
                     ]}
                     RowComponent={RowBusiness}
