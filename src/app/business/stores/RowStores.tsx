@@ -1,12 +1,13 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { ChangeEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { FaListUl } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { db_client } from '../../../firebase/client';
 import { checkingCommerce } from '../../../components/Helpers/chekingComerce';
 import { toast } from 'react-hot-toast';
-import { StatusHandler } from '../../../common/statusHndler/StatusHandler';
 import { Store } from '../../../types/store';
+
 
 interface Nombres {
     name: string;
@@ -62,7 +63,7 @@ export const RowStores = ({ values }: { values: Store }) => {
                 <td>
                     <div className="form-control">
                         <label className="cursor-pointer label">
-                            <input type="checkbox"  className="checkbox checkbox-secondary" />
+                            <input type="checkbox" className="checkbox checkbox-secondary" />
                         </label>
                     </div>
                 </td>
@@ -118,12 +119,30 @@ export const RowStores = ({ values }: { values: Store }) => {
 
                 </td>
 
-                <td className='flex'>
-                    <Link href={`/empresas/${idBusiness}/tiendas/${values.id}/productos/`}>
-                        <button className='btn btn-primary btn-sm mr-3 mt-1' >
-                            Productos
-                        </button>
-                    </Link>
+                <td>
+
+                    <div className="dropdown dropdown-left  dropdown-hover dropdown-[1rem] m-0">
+                        <label tabIndex={0} className="btn m-1 btn-sm btn-primary m-0"> <FaListUl /></label>
+                        <ul tabIndex={0} className="dropdown-content bg-amber-200 menu p-2 shadow bg-base-100 rounded-box w-25">
+                            <li>
+                                <Link href={`/empresas/${idBusiness}/tiendas/${values.id}/areas/`}>
+                                    <a className='text-medium'>Areas</a>
+                                </Link>
+                            </li>
+                   
+                            <li>
+                                <Link href={`/empresas/${idBusiness}/tiendas/${values.id}/productos/`}>
+                                    <a className='text-medium'>Productos</a>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href={`/empresas/${idBusiness}/tiendas/${values.id}/horarios/`}>
+                                    <a className='text-medium'>Horarios</a>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+
                 </td>
             </tr>
 

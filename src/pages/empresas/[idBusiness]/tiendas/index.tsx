@@ -1,12 +1,12 @@
 import { collection, query, orderBy } from "firebase/firestore";
 import { useRouter } from 'next/router';
 import { useState } from "react";
+import { ChangeEvent } from "react";
 import { Dashboard } from "../../../../layout/Dashboard/Dashboard";
 import { db_client } from "../../../../firebase/client";
 import { RowStores } from "../../../../app/business/stores/RowStores";
 import { FirebaseDataTable } from "../../../../components/FirebaseDataTable/FirebaseDataTable";
 import { Commerce } from "../../../../types/comerce";
-import { ChangeEvent } from "react";
 const Business = () => {
     const [commerce, setCommerce] = useState<Commerce[]>([]);
     const [selectedStores, setSelectedStores] = useState<string[]>([]);
@@ -28,7 +28,9 @@ const Business = () => {
       
     return (
         <Dashboard>
+            
             <div className="flex">
+             
                 <button className='btn btn-primary btn-sm mr-3 mt-1 mb-2' >
                     Verficar Seleccionados
                 </button>
