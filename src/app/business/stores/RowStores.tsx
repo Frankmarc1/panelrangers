@@ -56,6 +56,7 @@ export const RowStores = ({ values }: { values: Store }) => {
                 setLoading(false);
             });
     }, []);
+ 
 
     return (
         <>
@@ -123,13 +124,13 @@ export const RowStores = ({ values }: { values: Store }) => {
 
                     <div className="dropdown dropdown-left  dropdown-hover dropdown-[1rem] m-0">
                         <label tabIndex={0} className="btn m-1 btn-sm btn-primary m-0"> <FaListUl /></label>
-                        <ul tabIndex={0} className="dropdown-content bg-amber-200 menu p-2 shadow bg-base-100 rounded-box w-25">
+                        <ul tabIndex={0} className="dropdown-content bg-amber-200 menu p-2 shadow bg-base-100 rounded-box w-25 border border-amber-400">
                             <li>
                                 <Link href={`/empresas/${idBusiness}/tiendas/${values.id}/areas/`}>
                                     <a className='text-medium'>Areas</a>
                                 </Link>
                             </li>
-                   
+
                             <li>
                                 <Link href={`/empresas/${idBusiness}/tiendas/${values.id}/productos/`}>
                                     <a className='text-medium'>Productos</a>
@@ -140,6 +141,15 @@ export const RowStores = ({ values }: { values: Store }) => {
                                     <a className='text-medium'>Horarios</a>
                                 </Link>
                             </li>
+                            <li className='bg-amber-400 text-medium'>
+                                <button className='btn btn-sm bg-amber-400 border-amber-400 lowercase hover:bg-amber-400 hover:border-amber-400'>
+                                    Clonar
+                                </button>
+                            </li>
+                           
+                            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Launch demo modal
+                            </button>
                         </ul>
                     </div>
 
