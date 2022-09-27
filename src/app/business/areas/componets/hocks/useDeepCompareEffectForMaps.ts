@@ -1,10 +1,7 @@
 import { createCustomEqual } from 'fast-equals';
 import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import { useEffect, useRef } from 'react';
-interface valores{
-    a: any,
-    b:any,
-}
+
 export const deepCompareEqualsForMaps = createCustomEqual(
     (deepEqual) => (a: any, b: any) => {
         if (

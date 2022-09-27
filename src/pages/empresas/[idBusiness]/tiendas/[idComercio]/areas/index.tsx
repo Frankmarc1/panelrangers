@@ -1,8 +1,9 @@
 import { Dashboard } from "../../../../../../layout/Dashboard/Dashboard";
-const Areas=()=>{
+import { Index } from "../../../../../../app/business/areas";
+const Areas=():JSX.Element=>{
     return(
         <Dashboard>
-             hola
+               <Index/>
         </Dashboard>
        
     )
