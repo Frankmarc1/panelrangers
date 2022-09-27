@@ -70,16 +70,16 @@ export const Areas = (): JSX.Element => {
 
   return (
     <>
-      <div className='mb-3'>
+      <div className='mb-1 mt-[-1rem]'>
         {context?.areas && context.areas.length === 0 && (
           <p className='fs-5 text-danger fw-bold'>
             Aun no se han registrado areas a este comercio
           </p>
         )}
-        <div className='w-100 flex justify-between align-items-center'>
+        <div className='w-full flex justify-between align-items-center '>
           <div>
             <button
-              className='btn btn-success mr-3 btn-sm fw-bold'
+              className='btn btn-success mr-3 btn-sm fw-bold mb-2'
               onClick={showForm}
               title='Crear nueva area'
             >
@@ -99,8 +99,8 @@ export const Areas = (): JSX.Element => {
         </div>
       </div>
 
-      <div className='row mb-4'>
-        <div className={showList ? 'col-md-8' : 'col-md-12'}>
+      <div className='grid grid-cols-12 w-full gap-4'>
+        <div className={showList ? 'grid col-span-8' : '  col-span-12'}>
           <Wrapper apiKey='AIzaSyBz1qBkGOSE-aLC27FTsnmT9mFwy64xBxE'>
             <Map
               onClick={onClick}
@@ -168,7 +168,7 @@ export const Areas = (): JSX.Element => {
             </Map>
           </Wrapper>
         </div>
-        <div className='col-md-4'>
+        <div className=' grid col-span-4'>
           {showList && <ListAreas handleShow={setShowList} />}
         </div>
       </div>

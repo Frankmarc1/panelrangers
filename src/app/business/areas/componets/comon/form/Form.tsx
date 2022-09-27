@@ -1,4 +1,7 @@
-import { yupResolver } from '@hookform/resolvers/yup';
+import { FaSave } from 'react-icons/fa';
+import { toast } from 'react-hot-toast';
+import { MdDeleteForever, MdCancel } from "react-icons/md";
+import { FloatingInput } from '../../../../../../components/Inputs/FloatingInput';
 import {
     arrayUnion,
     doc,
@@ -10,7 +13,6 @@ import { useRouter } from 'next/router';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 import { db_client } from '../../../../../../firebase/client';
@@ -33,9 +35,9 @@ export const Form = ({ hiddenForm }: Props): JSX.Element => {
     const [nameArea, setNameArea] = useState<string>('');
     const { register, setValue, handleSubmit, reset } = useForm<Inputs>();
     const context = useMap();
-    const router=useRouter()
-    const {idBusiness}=router.query;
-    const {idComercio}=router.query;
+    const router = useRouter()
+    const { idBusiness } = router.query;
+    const { idComercio } = router.query;
 
     useEffect(() => {
         if (context?.idArea) {
@@ -97,16 +99,48 @@ export const Form = ({ hiddenForm }: Props): JSX.Element => {
 
         if (!context?.idArea) {
             if (context?.points.length === 0) {
-                toast('Puntos no seleccionados');
-
+                toast.error('Puntos no seleccionados');
                 return;
             }
 
             if (context?.points && context.points.length < 3) {
-                toast('El area no valida debe tener al menos 3 puntos');
-
+                toast.error('El area no valida debe tener al menos 3 puntos');
                 return;
             }
+        }
+        if (!fields.name_area) {
+            toast.error("Ingrese Nombre de Area.")
+            document.getElementById("nombre")?.focus();
+            return;
+
+        }
+      
+        if (fields.name_area.trim().length < 3) {
+            toast.error("Area No Valida.")
+            document.getElementById('nombre')?.focus();
+            return;
+        }
+        if (!fields.price_area) {
+            toast.error("Ingrese Precio.")
+            document.getElementById("precio")?.focus();
+            return;
+
+        }
+        //|| fields.name_area.match(/[0-9]/)
+        if (fields.price_area <= 0) {
+            toast.error("Precio No Valida.")
+            document.getElementById('precio')?.focus();
+            return;
+        }
+        if (!fields.time_area) {
+            toast.error("Ingrese Tiempo de Atencion.")
+            document.getElementById("tiempo")?.focus();
+            return;
+        }
+        if (fields.time_area <= 0) {    
+            toast.error("Tiempo No Valido.")
+            document.getElementById('tiempo')?.focus();
+            return;
         }
 
         try {
@@ -188,74 +222,69 @@ export const Form = ({ hiddenForm }: Props): JSX.Element => {
     };
 
     return (
-        <div className='card-body flex justify-between align-items-center'>
-
+        <div className='card-body flex justify-between align-items-center mt-[-2rem]'>
             <form
                 id='area_form'
                 className='align-items-end'
                 onSubmit={handleSubmit(onSubmit)}
                 autoComplete={'off'}>
-                <div className='flex'>
-                    <div className='form-floating  mb-md-0 me-md-2'>
-                        <input
-                            id='name'
-                            type='text'
+                <div className='flex  ml-[-4rem] '>
+                    <div className='mr-2'>
+                        <FloatingInput
                             placeholder='Nombre'
-                            className='form-control'
+                            type={'text'}
+                            id="nombre"
                             {...register('name_area')}
                         />
-                        <label htmlFor='name'>Nombre</label>
+
                     </div>
 
-                    <div className='form-floating mb-3 mb-md-0 me-md-2'>
-                        <input
-                            id='price'
+                    <div className='mr-2'>
+                        <FloatingInput
                             type='number'
                             placeholder='Precio'
-                            className='form-control'
                             {...register('price_area')}
                             step='0.01'
+                            id='precio'
                         />
-                        <label htmlFor='price'>Precio</label>
+
                     </div>
 
-                    <div className='form-floating mb-3  mb-md-0 me-md-2'>
-                        <input
-                            id='ta'
+                    <div className='mr-2'>
+                        <FloatingInput
                             step='1'
                             type='number'
+                            id='tiempo'
                             placeholder='Tiempo de atención'
-                            className='form-control'
                             {...register('time_area')}
                         />
-                        <label htmlFor='ta'>Tiempo de atencion</label>
                     </div>
 
-                    <div className='me-md-2 mb-3 mb-md-0 d-flex align-items-center'>
+                    <div className='flex '>
                         {loading ? (
                             <div className='spinner-border' role='status'>
                                 <span className='visually-hidden'>Loading...</span>
                             </div>
                         ) : (
                             <>
-                                <button type='submit' className='btn btn-success  me-2'>
-                                    Guardar
+                                <button type='submit' className='btn btn-md btn-success mb-2 text-xl text-primary mr-2'>
+                                    <FaSave />
                                 </button>
 
                                 {context?.idArea && (
                                     <button
                                         type='button'
-                                        className='btn btn-danger mb-3 mb-md-0 me-md-2'
+                                        className='btn btn-md btn-error mb-3  text-xl  text-black mr-2'
                                         onClick={() => deleteArea(context.idArea)}>
-                                        Eliminar area
+                                        <MdDeleteForever />
                                     </button>
                                 )}
 
                                 <button
                                     type='button'
-                                    className='btn btn-secondary text-white'
+                                    className='btn  btn-md btn-secondary text-sm text-xl text-white'
                                     onClick={hiddenForm}>
-                                    Cancelar
+                                    <MdCancel />
                                 </button>
                             </>
                         )}
