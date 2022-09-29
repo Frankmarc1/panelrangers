@@ -7,6 +7,7 @@ import { db_client } from "../../../../firebase/client";
 import { RowStores } from "../../../../app/business/stores/RowStores";
 import { FirebaseDataTable } from "../../../../components/FirebaseDataTable/FirebaseDataTable";
 import { Commerce } from "../../../../types/comerce";
+import { CloneStore } from "../../../../app/business/stores/components/CloneStore";
 const Business = () => {
     const [commerce, setCommerce] = useState<Commerce[]>([]);
     const [selectedStores, setSelectedStores] = useState<string[]>([]);
@@ -28,8 +29,9 @@ const Business = () => {
       
     return (
         <Dashboard>
-            
-            <div className="flex">
+           
+         
+            <div className={`flex t-0 `}>
              
                 <button className='btn btn-primary btn-sm mr-3 mt-1 mb-2' >
                     Verficar Seleccionados
@@ -59,6 +61,7 @@ const Business = () => {
                 RowComponent={RowStores}
                 qi={query(collection(db_client, `empresas/${idBusiness}/comercios`), orderBy('id'))}
             />
+            
         </Dashboard>
     );
 }

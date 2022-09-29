@@ -1,25 +1,30 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FaListUl } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+
 import { db_client } from '../../../firebase/client';
 import { checkingCommerce } from '../../../components/Helpers/chekingComerce';
 import { toast } from 'react-hot-toast';
 import { Store } from '../../../types/store';
 
-
+import { CloneStore } from "../../../app/business/stores/components/CloneStore";
+import { Commerce } from '../../../types/comerce';
 interface Nombres {
     name: string;
 }
 
-export const RowStores = ({ values }: { values: Store }) => {
+
+export const RowStores = ({ values }: { values: Store }): JSX.Element => {
     const [nameSector, setNameSector] = useState('');
     const [loading, setLoading] = useState(true);
     const [loading2, setLoading2] = useState<boolean>(false);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     const router = useRouter();
     const { idBusiness } = router.query
+   
 
     const handleStatusChange = async (e: ChangeEvent<HTMLInputElement>) => {
         setLoading(true);
@@ -56,10 +61,11 @@ export const RowStores = ({ values }: { values: Store }) => {
                 setLoading(false);
             });
     }, []);
- 
+
 
     return (
         <>
+
             <tr>
                 <td>
                     <div className="form-control">
@@ -123,8 +129,8 @@ export const RowStores = ({ values }: { values: Store }) => {
                 <td>
 
                     <div className="dropdown dropdown-left  dropdown-hover dropdown-[1rem] m-0">
-                        <label tabIndex={0} className="btn m-1 btn-sm btn-primary m-0"> <FaListUl /></label>
-                        <ul tabIndex={0} className="dropdown-content bg-amber-200 menu p-2 shadow bg-base-100 rounded-box w-25 border border-amber-400">
+                        <label tabIndex={0} className="btn m-1 btn-sm btn-primary "> <FaListUl /></label>
+                        <ul tabIndex={0} className="dropdown-content bg-amber-200 menu p-2 shadow rounded-box w-25 border border-amber-400">
                             <li>
                                 <Link href={`/empresas/${idBusiness}/tiendas/${values.id}/areas/`}>
                                     <a className='text-medium'>Areas</a>
@@ -142,20 +148,24 @@ export const RowStores = ({ values }: { values: Store }) => {
                                 </Link>
                             </li>
                             <li className='bg-amber-400 text-medium'>
-                                <button className='btn btn-sm bg-amber-400 border-amber-400 lowercase hover:bg-amber-400 hover:border-amber-400'>
+                                <button
+                                    className='btn btn-sm bg-amber-400 border-amber-400 lowercase hover:bg-amber-400 hover:border-amber-400'
+                                    onClick={()=>setShowModal(true)}
+                                >
                                     Clonar
                                 </button>
                             </li>
-                           
-                            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Launch demo modal
-                            </button>
+                         
                         </ul>
                     </div>
 
                 </td>
             </tr>
+            <CloneStore
+                isVisible={showModal}
+                onClose={()=>setShowModal(false)}
 
+            />
         </>
     );
 };
