@@ -9,7 +9,7 @@ import { checkingCommerce } from '../../../components/Helpers/chekingComerce';
 import { toast } from 'react-hot-toast';
 import { Store } from '../../../types/store';
 
-import { CloneStore } from "../../../app/business/stores/components/CloneStore";
+import { CloneStore } from "./CloneStore";
 import { Commerce } from '../../../types/comerce';
 interface Nombres {
     name: string;
@@ -21,10 +21,11 @@ export const RowStores = ({ values }: { values: Store }): JSX.Element => {
     const [loading, setLoading] = useState(true);
     const [loading2, setLoading2] = useState<boolean>(false);
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [idComerce,setIdComerce]=useState<string>('');
 
     const router = useRouter();
     const { idBusiness } = router.query
-   
+    
 
     const handleStatusChange = async (e: ChangeEvent<HTMLInputElement>) => {
         setLoading(true);
@@ -150,7 +151,20 @@ export const RowStores = ({ values }: { values: Store }): JSX.Element => {
                             <li className='bg-amber-400 text-medium'>
                                 <button
                                     className='btn btn-sm bg-amber-400 border-amber-400 lowercase hover:bg-amber-400 hover:border-amber-400'
-                                    onClick={()=>setShowModal(true)}
+                                    onClick={()=>{
+                                        setShowModal(true)
+                                        setIdComerce(`${values.id}`)
+                                        const el=document.getElementById("modalClone");
+                                        if(el){
+                                            el.dataset.id=values.id
+                                        }
+                                        
+                                    }
+                                    
+                                    
+                                    }
+                                    
+                                    id={values.id}
                                 >
                                     Clonar
                                 </button>
@@ -163,6 +177,7 @@ export const RowStores = ({ values }: { values: Store }): JSX.Element => {
             </tr>
             <CloneStore
                 isVisible={showModal}
+                
                 onClose={()=>setShowModal(false)}
 
             />

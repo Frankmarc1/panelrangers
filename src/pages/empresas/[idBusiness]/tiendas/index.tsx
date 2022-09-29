@@ -7,7 +7,7 @@ import { db_client } from "../../../../firebase/client";
 import { RowStores } from "../../../../app/business/stores/RowStores";
 import { FirebaseDataTable } from "../../../../components/FirebaseDataTable/FirebaseDataTable";
 import { Commerce } from "../../../../types/comerce";
-import { CloneStore } from "../../../../app/business/stores/components/CloneStore";
+import { CloneStore } from "../../../../app/business/stores/CloneStore";
 const Business = () => {
     const [commerce, setCommerce] = useState<Commerce[]>([]);
     const [selectedStores, setSelectedStores] = useState<string[]>([]);

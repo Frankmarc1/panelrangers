@@ -17,13 +17,15 @@ import { db_client } from '../../../../../firebase/client';
       });
     });
   };
-  
-  export const cloneStore = async (idCompany: string, pathToStore: string) => {
+
+
+  export const cloneStore = async (idBusiness: string, pathToStore: string) => {
+
     const colExtras = collection(db_client, `${pathToStore}/adicionales`);
     const colCategories = collection(db_client, `${pathToStore}/categorias`);
     const colProducts = collection(db_client, `${pathToStore}/productos`);
-    const newStore = doc(collection(db_client, `empresas/${idCompany}/comercios`));
-    const routePrincipal = `empresas/${idCompany}/comercios/${newStore.id}`;
+    const newStore = doc(collection(db_client, `empresas/${idBusiness}/comercios`));
+    const routePrincipal = `empresas/${idBusiness}/comercios/${newStore.id}`;
   
     try {
       // clone commerce
@@ -32,7 +34,7 @@ import { db_client } from '../../../../../firebase/client';
       await setDoc(newStore, {
         ...storeData,
         id: newStore.id,
-        referenceEmpresa: doc(db_client, `empresas/${idCompany}`),
+        referenceEmpresa: doc(db_client, `empresas/${idBusiness}`),
       });
   
       await cloneDocuments(colExtras, `${routePrincipal}/adicionales`);
