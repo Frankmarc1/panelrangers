@@ -1,90 +1,125 @@
 import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import toast from 'react-hot-toast';
+
 import { db_client, storage_client } from '../../../firebase/client';
 import { MotorizedFields } from '../../../pages/motorizados/[idMotorized]/editar';
 import { Motorized } from '../../../types/motorized';
+import { normalizePeruPhoneForSearch } from '../../../utils/phone';
 
 export const editMotorized = async (
   motorized: MotorizedFields,
   uid: string,
   initialValues: Motorized
 ) => {
-  let referenceAgency = initialValues.reference_agencia;
-  let referencePhase = initialValues.reference_fase;
-  let photo = initialValues.profile.img;
-
-  // define agency
-  if (motorized.agency != initialValues.reference_agencia.id) {
-    const docRef = doc(db_client, 'empresas_agencia/' + motorized.agency);
-    const snap = await getDoc(docRef);
-
-    if (!snap.exists()) {
-      toast.error('La agencia selecionada no existe.');
-
-      return;
-    }
-
-    referenceAgency = docRef;
-  }
-
-  if (motorized.phase != initialValues.reference_fase.id) {
-    const docRef = doc(db_client, 'fases/' + motorized.phase);
-    const snap = await getDoc(docRef);
-
-    if (!snap.exists()) {
-      toast.error('La fase selecionada no existe.');
-
-      return;
-    }
-
-    referencePhase = docRef;
-  }
-
-  // save new photo
-  if (motorized.photo instanceof FileList) {
-    const storageRef = ref(
-      storage_client,
-      `users_motorizados/${initialValues.id}/fotos/${initialValues.id}`
-    );
-
-    await uploadBytes(storageRef, motorized.photo[0]);
-
-    photo = await getDownloadURL(storageRef);
-  }
-
-  let data = {
-    activo: motorized.data_app === 'true',
-    movilidad: {
-      color: motorized.color.trim(),
-      expiracionBrevete: motorized.date_exp_license,
-      expiracionSoat: motorized.date_exp_soat,
-      marca: motorized.brand.trim(),
-      placa: motorized.license_plate.trim(),
-      reference_tipo: doc(db_client, '/tipo_movilidad/MOTOCICLETA'),
-    },
-    reference_master: doc(db_client, 'rangers_masters/' + uid),
-    reference_fase: referencePhase,
-    phone: motorized.phone.trim(),
-    'profile.dni': motorized.dni.trim(),
-    'profile.lastName': motorized.lastName.toUpperCase().trim(),
-    'profile.name': motorized.name.toUpperCase().trim(),
-    'profile.img': photo,
-    timeUpdate: serverTimestamp(),
-    tipo_ranger: motorized.type_contract,
-    reference_agencia: referenceAgency,
-    porcentaje: motorized.percent,
-  };
-
   try {
-    const docSnap = doc(db_client, `users_motorizados/${initialValues.id}`);
+    if (!initialValues.id) {
+      toast.error('No se encontró el ID del motorizado.');
+      return;
+    }
 
-    updateDoc(docSnap, data);
+    let referenceAgency = initialValues.reference_agencia ?? null;
+    let referencePhase = initialValues.reference_fase ?? null;
+    let photo = initialValues.profile?.img ?? '';
 
-    toast.success('Actualizado correctmente.');
+    const currentAgencyId = initialValues.reference_agencia?.id ?? '';
+    const currentPhaseId = initialValues.reference_fase?.id ?? '';
+
+    const newAgencyId = motorized.agency ?? '';
+    const newPhaseId = motorized.phase ?? '';
+
+    /**
+     * Definir agencia.
+     * Si no selecciona agencia, queda null.
+     */
+    if (newAgencyId && newAgencyId !== currentAgencyId) {
+      const docRef = doc(db_client, 'empresas_agencia', newAgencyId);
+      const snap = await getDoc(docRef);
+
+      if (!snap.exists()) {
+        toast.error('La agencia seleccionada no existe.');
+        return;
+      }
+
+      referenceAgency = docRef;
+    }
+
+    if (!newAgencyId) {
+      referenceAgency = null;
+    }
+
+    /**
+     * Definir fase.
+     * Si no selecciona fase, queda null.
+     */
+    if (newPhaseId && newPhaseId !== currentPhaseId) {
+      const docRef = doc(db_client, 'fases', newPhaseId);
+      const snap = await getDoc(docRef);
+
+      if (!snap.exists()) {
+        toast.error('La fase seleccionada no existe.');
+        return;
+      }
+
+      referencePhase = docRef;
+    }
+
+    if (!newPhaseId) {
+      referencePhase = null;
+    }
+
+    /**
+     * Guardar nueva foto solo si realmente seleccionó archivo.
+     */
+    if (motorized.photo instanceof FileList && motorized.photo.length > 0) {
+      const storageRef = ref(
+        storage_client,
+        `users_motorizados/${initialValues.id}/fotos/${initialValues.id}`
+      );
+
+      await uploadBytes(storageRef, motorized.photo[0]);
+
+      photo = await getDownloadURL(storageRef);
+    }
+
+    const cleanPhone = motorized.phone.trim();
+
+    const data = {
+      activo: motorized.data_app === 'true',
+
+      movilidad: {
+        color: motorized.color.trim(),
+        expiracionBrevete: motorized.date_exp_license,
+        expiracionSoat: motorized.date_exp_soat,
+        marca: motorized.brand.trim(),
+        placa: motorized.license_plate.trim(),
+        reference_tipo: doc(db_client, 'tipo_movilidad', 'MOTOCICLETA'),
+      },
+
+      reference_master: doc(db_client, 'rangers_masters', uid),
+      reference_fase: referencePhase,
+      reference_agencia: referenceAgency,
+
+      phone: cleanPhone,
+      phoneSearch: normalizePeruPhoneForSearch(cleanPhone),
+
+      'profile.dni': motorized.dni.trim(),
+      'profile.lastName': motorized.lastName.toUpperCase().trim(),
+      'profile.name': motorized.name.toUpperCase().trim(),
+      'profile.img': photo,
+
+      timeUpdate: serverTimestamp(),
+      tipo_ranger: motorized.type_contract,
+      porcentaje: Number(motorized.percent || 0),
+    };
+
+    const docSnap = doc(db_client, 'users_motorizados', initialValues.id);
+
+    await updateDoc(docSnap, data);
+
+    toast.success('Actualizado correctamente.');
   } catch (err) {
-    console.log(err);
-
-    toast.error('Error en el servidor');
+    console.error(err);
+    toast.error('Error en el servidor.');
   }
 };
