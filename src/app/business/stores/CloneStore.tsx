@@ -20,10 +20,10 @@ import { cloneStore } from './components/helpers/cloneStore';
 import { FloatingInput } from "../../../components/Inputs/FloatingInput"
 
 type Props = {
-  id:string;
-  isVisible: Boolean;
-  onClose: Boolean;
-  children?: JSX.Element | JSX.Element[];
+  id: string;
+  isVisible: boolean;
+  onClose: () => void;
+  children?: React.ReactNode;
 };
 export const CloneStore = ({ id,isVisible, onClose, children }: Props) => {
 
@@ -42,9 +42,13 @@ export const CloneStore = ({ id,isVisible, onClose, children }: Props) => {
   },[])
 
   if (!isVisible) return null;
-  const handleClose = (e) => {
-    if (e.target.id === "modalClone") onClose();
+  const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
+  const target = e.target as HTMLElement;
+
+  if (target.id === 'modalClone') {
+    onClose();
   }
+};
 
   //logica
   const handleSubmit: FormEventHandler = async (e: FormEvent) => {

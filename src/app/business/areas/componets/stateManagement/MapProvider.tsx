@@ -1,14 +1,23 @@
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { db_client } from '../../../../../firebase/client';
 import { mapContext, Map, Area, Point } from './mapContext';
 
-export const MapProvider: FC = ({ children }): JSX.Element => {
+interface MapProviderProps {
+  children: ReactNode;
+}
+
+export const MapProvider = ({ children }: MapProviderProps): JSX.Element => {
+  const router = useRouter();
+  const { idBusiness, idComercio } = router.query;
+
   const [loading, setLoading] = useState(true);
   const [areas, setAreas] = useState<Area[]>([]);
   const [points, setPoints] = useState<Point[]>([]);
+  const [idArea, setIdArea] = useState<number | undefined>(undefined);
+
   const [store, setStore] = useState<{
     lat: number;
     lng: number;
@@ -16,15 +25,10 @@ export const MapProvider: FC = ({ children }): JSX.Element => {
     lat: -5.30899082575,
     lng: -80.7625713371,
   });
-  const router=useRouter();
-  const {idBusiness}=router.query;
-  const {idComercio}=router.query;
-  const [idArea, setIdArea] = useState<number | undefined>(undefined);
-
 
   const savePoint = (point: google.maps.LatLng) => {
-    setPoints((p) => [
-      ...p,
+    setPoints((currentPoints) => [
+      ...currentPoints,
       {
         coors: point,
         id: Date.now(),
@@ -33,55 +37,90 @@ export const MapProvider: FC = ({ children }): JSX.Element => {
   };
 
   const handleDelete = (id: number) => {
-    const filterMarkers = points.filter((point) => {
-      return point.id !== id;
-    });
-
-    setPoints(filterMarkers);
+    setPoints((currentPoints) =>
+      currentPoints.filter((point) => point.id !== id)
+    );
   };
 
-  const selectArea = (id: number) => setIdArea(id);
-  const deselectArea = () => setIdArea(undefined);
-
-  const clearPoints = () => setPoints([]);
-
-  const values: Map = {
-    areas,
-    points,
-    savePoint,
-    store,
-    clearPoints,
-    handleDelete,
-    selectArea,
-    idArea,
-    deselectArea,
+  const selectArea = (id: number) => {
+    setIdArea(id);
   };
+
+  const deselectArea = () => {
+    setIdArea(undefined);
+  };
+
+  const clearPoints = () => {
+    setPoints([]);
+  };
+
+  const values: Map = useMemo(
+    () => ({
+      areas,
+      points,
+      savePoint,
+      store,
+      clearPoints,
+      handleDelete,
+      selectArea,
+      idArea,
+      deselectArea,
+    }),
+    [areas, points, store, idArea]
+  );
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      doc(db_client, `/empresas/${idBusiness}/comercios/${idComercio}`),
-      (snap) => {
-        if (snap.exists()) {
-          const {
-            areas = [],
-            address: { location },
-          } = snap.data();
+    if (!router.isReady) return;
 
+    if (typeof idBusiness !== 'string' || typeof idComercio !== 'string') {
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+
+    const comercioRef = doc(
+      db_client,
+      'empresas',
+      idBusiness,
+      'comercios',
+      idComercio
+    );
+
+    const unsubscribe = onSnapshot(
+      comercioRef,
+      (snap) => {
+        if (!snap.exists()) {
+          setAreas([]);
+          setLoading(false);
+          return;
+        }
+
+        const data = snap.data();
+
+        const areasData = Array.isArray(data.areas) ? data.areas : [];
+        const location = data.address?.location;
+
+        if (location?.latitude && location?.longitude) {
           setStore({
             lat: location.latitude,
             lng: location.longitude,
           });
-
-          setAreas(areas);
-          setLoading(false);
         }
+
+        setAreas(areasData);
+        setLoading(false);
+      },
+      (error) => {
+        console.error('Error escuchando comercio:', error);
+        setLoading(false);
       }
     );
 
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [router.isReady, idBusiness, idComercio]);
 
   return (
     <div>

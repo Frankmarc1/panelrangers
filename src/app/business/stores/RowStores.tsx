@@ -175,12 +175,11 @@ export const RowStores = ({ values }: { values: Store }): JSX.Element => {
 
                 </td>
             </tr>
-            <CloneStore
-                isVisible={showModal}
-                
-                onClose={()=>setShowModal(false)}
-
-            />
+           <CloneStore
+  id={idComerce}
+  isVisible={showModal}
+  onClose={() => setShowModal(false)}
+/>
         </>
     );
 };

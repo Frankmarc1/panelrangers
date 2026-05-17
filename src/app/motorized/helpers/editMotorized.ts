@@ -1,4 +1,11 @@
-import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+  DocumentData,
+  DocumentReference,
+} from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import toast from 'react-hot-toast';
 
@@ -18,8 +25,12 @@ export const editMotorized = async (
       return;
     }
 
-    let referenceAgency = initialValues.reference_agencia ?? null;
-    let referencePhase = initialValues.reference_fase ?? null;
+    let referenceAgency: DocumentReference<DocumentData> | null =
+      initialValues.reference_agencia ?? null;
+
+    let referencePhase: DocumentReference<DocumentData> | null =
+      initialValues.reference_fase ?? null;
+
     let photo = initialValues.profile?.img ?? '';
 
     const currentAgencyId = initialValues.reference_agencia?.id ?? '';
@@ -28,10 +39,6 @@ export const editMotorized = async (
     const newAgencyId = motorized.agency ?? '';
     const newPhaseId = motorized.phase ?? '';
 
-    /**
-     * Definir agencia.
-     * Si no selecciona agencia, queda null.
-     */
     if (newAgencyId && newAgencyId !== currentAgencyId) {
       const docRef = doc(db_client, 'empresas_agencia', newAgencyId);
       const snap = await getDoc(docRef);
@@ -48,10 +55,6 @@ export const editMotorized = async (
       referenceAgency = null;
     }
 
-    /**
-     * Definir fase.
-     * Si no selecciona fase, queda null.
-     */
     if (newPhaseId && newPhaseId !== currentPhaseId) {
       const docRef = doc(db_client, 'fases', newPhaseId);
       const snap = await getDoc(docRef);
@@ -68,9 +71,6 @@ export const editMotorized = async (
       referencePhase = null;
     }
 
-    /**
-     * Guardar nueva foto solo si realmente seleccionó archivo.
-     */
     if (motorized.photo instanceof FileList && motorized.photo.length > 0) {
       const storageRef = ref(
         storage_client,

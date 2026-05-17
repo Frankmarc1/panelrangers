@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   collection,
+  DocumentData,
   getDocs,
   orderBy,
   query,
   serverTimestamp,
+  UpdateData,
   writeBatch,
 } from 'firebase/firestore';
 import { useRouter } from 'next/router';
@@ -85,7 +87,7 @@ function normalizeTypes(types: any[]): any[] {
   }));
 }
 
-const Business = () => {
+const Business = (): JSX.Element => {
   const router = useRouter();
   const { idBusiness } = router.query;
 
@@ -156,7 +158,9 @@ const Business = () => {
       return;
     }
 
-    const storeName = selectedStore ? getCommerceName(selectedStore) : selectedStoreId;
+    const storeName = selectedStore
+      ? getCommerceName(selectedStore)
+      : selectedStoreId;
 
     const result = await Swal.fire({
       icon: 'warning',
@@ -224,7 +228,7 @@ const Business = () => {
         const availability = normalizeAvailability(product);
         const normalizedTypes = normalizeTypes(product.tipos || []);
 
-        const updatePayload: Record<string, unknown> = {
+        const updatePayload: UpdateData<DocumentData> = {
           id: getString(product.id) || productDoc.id,
 
           availability,
@@ -306,7 +310,9 @@ const Business = () => {
             disabled={loadingCommerce || migrating}
           >
             <option value="">
-              {loadingCommerce ? 'Cargando comercios...' : 'Selecciona un comercio'}
+              {loadingCommerce
+                ? 'Cargando comercios...'
+                : 'Selecciona un comercio'}
             </option>
 
             {commerce.map((item) => (
