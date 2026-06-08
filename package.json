@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "luxon": "^3.0.1",
     "next": "12.2.4",
+    "pdfjs-dist": "^3.11.174",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.36.1",
