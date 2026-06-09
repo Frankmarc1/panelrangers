@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { collection, getDocs, orderBy, query, serverTimestamp, writeBatch } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  writeBatch,
+} from "firebase/firestore";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
@@ -14,13 +21,25 @@ const Products = () => {
 
   const [validatingAll, setValidatingAll] = useState(false);
 
-  const productsPath =
-    idBusiness && idComercio
-      ? `/empresas/${idBusiness}/comercios/${idComercio}/productos`
-      : "";
+  const idBusinessValue = Array.isArray(idBusiness) ? idBusiness[0] : idBusiness;
+  const idComercioValue = Array.isArray(idComercio)
+    ? idComercio[0]
+    : idComercio;
+
+  const productsCollection =
+    idBusinessValue && idComercioValue
+      ? collection(
+          db_client,
+          "empresas",
+          idBusinessValue,
+          "comercios",
+          idComercioValue,
+          "productos"
+        )
+      : null;
 
   const handleValidateAllPending = async () => {
-    if (!idBusiness || !idComercio || !productsPath) {
+    if (!idBusinessValue || !idComercioValue || !productsCollection) {
       toast.error("No se pudo obtener la ruta de productos.");
       return;
     }
@@ -34,12 +53,16 @@ const Products = () => {
     try {
       setValidatingAll(true);
 
-      const snap = await getDocs(collection(db_client, productsPath));
+      const snap = await getDocs(productsCollection);
 
       const pendingDocs = snap.docs.filter((document) => {
         const data = document.data();
 
-        return data.verified !== true;
+        return (
+          data.verified !== true ||
+          data.validationStatus !== "APPROVED" ||
+          data.verificationSort !== 1
+        );
       });
 
       if (pendingDocs.length === 0) {
@@ -54,7 +77,14 @@ const Products = () => {
       for (const document of pendingDocs) {
         batch.update(document.ref, {
           verified: true,
+
+          // Lo dejo porque ya lo estabas usando, posiblemente por compatibilidad
+          // con algún código anterior que tenía el typo.
           verfied: true,
+
+          validationStatus: "APPROVED",
+          verificationSort: 1,
+
           validatedAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
           validationSource: "RANGERS_DASHBOARD",
@@ -85,7 +115,7 @@ const Products = () => {
     }
   };
 
-  if (!idBusiness || !idComercio) {
+  if (!idBusinessValue || !idComercioValue || !productsCollection) {
     return (
       <Dashboard>
         <div className="rounded-xl bg-white p-4 text-sm font-semibold text-slate-700">
@@ -104,7 +134,8 @@ const Products = () => {
           </h1>
 
           <p className="text-sm text-slate-500">
-            Valida los productos registrados por la tienda antes de mostrarlos en VeryGo.
+            Valida los productos registrados por la tienda antes de mostrarlos
+            en VeryGo.
           </p>
         </div>
 
@@ -130,13 +161,10 @@ const Products = () => {
         ]}
         RowComponent={RowProducts}
         qi={query(
-  collection(
-    db_client,
-    `/empresas/${idBusiness}/comercios/${idComercio}/productos/`
-  ),
-  orderBy("verificationSort", "asc"),
-  orderBy("timeUp", "desc")
-)}
+          productsCollection,
+          orderBy("verificationSort", "asc"),
+          orderBy("timeUp", "desc")
+        )}
       />
     </Dashboard>
   );
